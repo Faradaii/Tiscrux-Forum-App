@@ -21,6 +21,7 @@
     "rules": {
       "no-console": "off",
       "no-alert": "off",
+      "no-shadow": "off",
       "react/react-in-jsx-scope": "off",
       "react/require-default-props": "off",
       "eol-last": "off",
@@ -44,6 +45,7 @@
       "no-underscore-dangle": "off",
       "no-return-await": "off",
       "default-param-last": 0,
-      "no-param-reassign": 0
+      "no-param-reassign": 0,
+      "no-case-declarations": 0
     }
 }
