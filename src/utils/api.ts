@@ -1,4 +1,4 @@
-import type { AllUser, LeaderboardData, ThreadDetail, Threads, User, VoteThread, VoteComment } from '../../types';
+import type { AllUser, LeaderboardData, ThreadDetail, Threads, User, VoteThread, VoteComment, VoteResponse } from '../../types';
 
 const api = (() => {
   const BASE_URL: string = 'https://forum-api.dicoding.dev/v1';
@@ -199,7 +199,7 @@ const api = (() => {
     return leaderboards;
   }
 
-  async function upvoteThread (id: string): Promise<VoteThread> {
+  async function upvoteThread (id: string): Promise<VoteResponse> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads/${id}/up-vote`, {
       method: 'POST'
     });
@@ -215,7 +215,7 @@ const api = (() => {
     return responseJson;
   }
 
-  async function downvoteThread (id: string): Promise<VoteThread> {
+  async function downvoteThread (id: string): Promise<VoteResponse> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads/${id}/down-vote`, {
       method: 'POST'
     });
@@ -231,7 +231,7 @@ const api = (() => {
     return responseJson;
   }
 
-  async function neutralvoteThread (id: string): Promise<VoteThread> {
+  async function neutralvoteThread (id: string): Promise<VoteResponse> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads/${id}/neutral-vote`, {
       method: 'POST'
     });
@@ -247,7 +247,8 @@ const api = (() => {
     return responseJson;
   }
 
-  async function upvoteThreadComment (threadId: string, commentId: string): Promise<VoteComment> {
+  async function upvoteThreadComment (threadId: string, commentId: string):
+  Promise<VoteResponse> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments/${commentId}/up-vote`, {
       method: 'POST'
     });
@@ -262,7 +263,8 @@ const api = (() => {
 
     return responseJson;
   }
-  async function downvoteThreadComment (threadId: string, commentId: string): Promise<VoteComment> {
+  async function downvoteThreadComment (threadId: string, commentId: string):
+  Promise<VoteResponse> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments/${commentId}/down-vote`, {
       method: 'POST'
     });
@@ -279,7 +281,7 @@ const api = (() => {
   }
 
   async function neutralvoteThreadComment (threadId: string, commentId: string):
-  Promise<VoteComment> {
+  Promise<VoteResponse> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments/${commentId}/neutral-vote`, {
       method: 'POST'
     });
