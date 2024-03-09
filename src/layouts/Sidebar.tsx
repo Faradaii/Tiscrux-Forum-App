@@ -21,11 +21,11 @@ function Sidebar ({
         <ButtonLink action="Pengaturan" />
       </div>
       {
-        (user != null)
+        (user !== null)
           ? (
             <div className="flex gap-3 mx-2 relative">
               <div>
-                <Image src={user.avatar} alt="" className="rounded-full w-12" />
+                <Image src={user.avatar} alt="" className="rounded-full w-12" width={100} height={100} />
               </div>
               <div className="grow ps-1 flex flex-col">
                 <small className="font-semibold text-lg">{user.name}</small>
