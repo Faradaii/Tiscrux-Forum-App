@@ -61,3 +61,13 @@ export interface VoteThread extends Vote {
 export interface VoteComment extends Vote {
   commentId: string
 }
+
+interface Response {
+  status: string
+  message: string
+  data: object
+}
+
+export interface VoteResponse extends Response {
+  data: VoteComment | VoteThread
+}
