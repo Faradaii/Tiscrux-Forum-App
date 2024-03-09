@@ -1,9 +1,8 @@
 import { useEffect, type ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { getAuthUserState } from '../store/authUser/slice';
 import Sidebar from './Sidebar';
-import { asyncPreloadProcess, getIsPreloadState } from '@/store/isPreload/slice';
+import { asyncPreloadProcess } from '@/store/isPreload/action';
 import { type User } from '../../types';
 
 const disableNavbar = ['/login', 'register'];
@@ -13,8 +12,8 @@ JSX.Element | null {
   const { pathname } = useRouter();
   const { authState, isPreload }: { authState: User | null, isPreload: boolean } =
   useSelector((state) => ({
-    authState: getAuthUserState(state),
-    isPreload: getIsPreloadState(state)
+    authState: state.authUser,
+    isPreload: state.isPreload
   }));
 
   const dispatch = useDispatch();
