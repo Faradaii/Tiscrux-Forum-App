@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import welcomeIlust from '../../../public/welcomeIlust.svg';
-import LoginInput from '../../components/inputs/LoginInput';
+import LoginInput from '@/components/inputs/LoginInput';
 import { asyncSetAuthUser } from '@/store/authUser/action';
 
 function Login (): JSX.Element {
