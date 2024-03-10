@@ -1,5 +1,5 @@
 import React, { type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import useInput from '../../hooks/UseInput';
 
 interface Props {
@@ -11,12 +11,12 @@ function RegisterInput ({ register }: Props): JSX.Element {
   const [email, setEmail] = useInput();
   const [password, setPassword] = useInput();
 
-  const navigate = useNavigate();
+  const { push } = useRouter();
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     register({ name, email, password });
-    navigate('/login');
+    push('/login');
   };
 
   return (
@@ -27,7 +27,7 @@ function RegisterInput ({ register }: Props): JSX.Element {
           type="text"
           value={name}
           required
-          onChange={(e) => setName(e.target.value)}
+          onChange={setName}
           className="w-full px-3 py-1 rounded-lg border-gray-200 border bg-white-light dark:bg-white-dark"
         />
       </div>
@@ -38,7 +38,7 @@ function RegisterInput ({ register }: Props): JSX.Element {
           autoComplete="username"
           value={email}
           required
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={setEmail}
           className="w-full px-3 py-1 rounded-lg border-gray-200 border bg-white-light dark:bg-white-dark"
         />
       </div>
@@ -49,7 +49,7 @@ function RegisterInput ({ register }: Props): JSX.Element {
           autoComplete="new-password"
           value={password}
           required
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={setPassword}
           className="w-full px-3 py-1 rounded-lg border-gray-200 border bg-white-light dark:bg-white-dark"
         />
       </div>
