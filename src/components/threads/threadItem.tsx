@@ -1,21 +1,14 @@
 import React from 'react';
 import parse from 'html-react-parser';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
   IoArrowUpCircle, IoArrowUpCircleOutline, IoArrowDownCircle, IoArrowDownCircleOutline,
   IoChatbubbleOutline
 } from 'react-icons/io5';
 import { convertDateFormat, captureImgSrc } from '../../utils';
+import { type Threads } from '../../../types';
 
-interface ThreadItemProps {
-  id: string
-  title: string
-  body: string
-  category: string
-  createdAt: string
-  upVotesBy: string[]
-  downVotesBy: string[]
-  totalComments: number
+export interface ThreadItemProps extends Threads {
   user: {
     id: string
     name: string
@@ -37,7 +30,7 @@ function ThreadItem ({
         <img src={user.avatar} alt="" className="min-w-14 max-w-14 me-4 rounded-full" />
       </div>
       <div className="grow me-3">
-        <Link to={`/threads/${id}`}>
+        <Link href={`/threads/${id}`}>
           <div className="flex">
             <div className="grow">
               <h5 className="font-semibold">{user.name}</h5>
@@ -86,7 +79,7 @@ function ThreadItem ({
             </button>
             <span>{downVotesBy.length}</span>
           </div>
-          <Link to={`/threads/${id}`} className="flex gap-1 items-center">
+          <Link href={`/threads/${id}`} className="flex gap-1 items-center">
             <IoChatbubbleOutline className="w-6 h-6" />
             <span>{totalComments}</span>
           </Link>
