@@ -11,10 +11,6 @@ export interface Token {
   password: string
 }
 
-export interface AllUser {
-  users: User[]
-}
-
 interface ThreadBase {
   id: string
   title: string
