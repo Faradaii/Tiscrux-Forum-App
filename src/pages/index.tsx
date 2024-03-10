@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import type { Dispatch } from '@reduxjs/toolkit';
 import { type RootState } from '../store/store';
 import asyncPopulateUsersAndThreads from '../store/shared/action';
 import { asyncToggleVoteThread } from '../store/threads/action';
@@ -21,6 +22,8 @@ function HomePage (): JSX.Element {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // const dispatchWithTypes: Dispatch<ReceiveUsersAction | ThreadAction> = dispatch;
+
     dispatch(asyncPopulateUsersAndThreads());
   }, [dispatch]);
 
@@ -31,6 +34,10 @@ function HomePage (): JSX.Element {
       alert('Silahkan login dulu');
     }
   };
+
+  const onClearFilter = ((): void => {
+    setFilter('');
+  });
 
   if (isPreload) {
     return <h1>loading</h1>;
@@ -71,17 +78,22 @@ function HomePage (): JSX.Element {
         <div className="bg-black-dark p-3 m-3 rounded-lg">
           {
             topicList.map(({ topic, totalPost }) => (
-              <div className="my-3" key={topic}>
-                <h1 className="w-5/6 m-auto text-lg font-medium">
-                  <button type="button" onClick={() => { setFilter(topic); }}>
-                    <span>#</span>
-                    {topic}
-                  </button>
-                </h1>
-                <h1 className="w-5/6 m-auto text-sm font-light text-gray-500">
-                  {totalPost}
-                  <span> posts</span>
-                </h1>
+              <div className="flex w-5/6 m-auto" key={topic}>
+                <button type="button" className="w-full border text-left" onClick={() => { setFilter(topic); }}>
+                  <div className="my-3 grow">
+                    <h1 className="text-lg font-medium">
+                      <span>#</span>
+                      {topic}
+                    </h1>
+                    <h1 className="text-sm font-light text-gray-500">
+                      {totalPost}
+                      <span> posts</span>
+                    </h1>
+                  </div>
+                </button>
+                {
+                  filter === topic && <button type="button" onClick={onClearFilter}>x</button>
+                }
               </div>
             ))
           }
