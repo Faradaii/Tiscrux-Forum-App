@@ -34,7 +34,7 @@ function DetailPage (): JSX.Element {
   }, [dispatch, threadId]);
 
   const onToggleVoteAction = ({ voteType }: { voteType: string }): void => {
-    if (authUser != null) {
+    if (authUser !== null) {
       dispatch(asyncToggleVoteThread({ threadId, userId: authUser.id, voteType }));
     } else {
       alert('Silahkan login dulu');
@@ -43,9 +43,9 @@ function DetailPage (): JSX.Element {
 
   const onToggleVoteCommentAction = ({ voteType, commentId }:
   { voteType: string, commentId: string }): void => {
-    if (authUser != null) {
+    if (authUser !== null) {
       dispatch(asyncToggleVoteComment({
-        threadId: threadId as string, commentId, userId: authUser.id, voteType
+        threadId, commentId, userId: authUser.id, voteType
       }));
     } else {
       alert('Silahkan login dulu');
