@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import type { Dispatch } from '@reduxjs/toolkit';
 import { type RootState } from '../store/store';
 import asyncPopulateUsersAndThreads from '../store/shared/action';
 import { asyncToggleVoteThread } from '../store/threads/action';
