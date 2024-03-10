@@ -35,16 +35,17 @@ export interface Comment {
   owner: Omit<User, 'email'>
 }
 
-export interface ThreadDetail extends ThreadBase {
+export interface Thread extends ThreadBase {
   owner: Omit<User, 'email'>
   comments: Comment[]
 }
 
-export interface LeaderboardData extends User {
+export interface LeaderboardData {
+  user: User
   score: number
 }
 
-interface Vote {
+export interface Vote {
   id: string
   userId: string
   voteType: number
