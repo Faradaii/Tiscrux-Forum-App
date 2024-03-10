@@ -1,49 +1,49 @@
 import { ActionType, type ThreadAction } from './action';
-import type { ThreadDetail } from '../../../types';
+import type { Thread } from '../../../types';
 
 function threadDetailReducer
-(detailThread: ThreadDetail | null = null, action: ThreadAction): ThreadDetail | null {
+(thread: Thread | null = null, action: ThreadAction): Thread | null {
   switch (action.type) {
     case ActionType.RECEIVE_THREAD_DETAIL:
-      return action.payload.detailThread;
+      return action.payload.thread;
     case ActionType.CLEAR_THREAD_DETAIL:
       return null;
     case ActionType.UPVOTE_THREAD:
-      if (detailThread == null) return detailThread;
+      if (thread == null) return thread;
       return {
-        ...detailThread,
-        upVotesBy: detailThread.upVotesBy.includes(action.payload.userId)
-          ? detailThread.upVotesBy.filter((id) => id !== action.payload.userId)
-          : detailThread.upVotesBy.concat(action.payload.userId),
-        downVotesBy: detailThread.downVotesBy.filter((id) => id !== action.payload.userId)
+        ...thread,
+        upVotesBy: thread.upVotesBy.includes(action.payload.userId)
+          ? thread.upVotesBy.filter((id) => id !== action.payload.userId)
+          : thread.upVotesBy.concat(action.payload.userId),
+        downVotesBy: thread.downVotesBy.filter((id) => id !== action.payload.userId)
       };
     case ActionType.DOWNVOTE_THREAD:
-      if (detailThread == null) return detailThread;
+      if (thread == null) return thread;
       return {
-        ...detailThread,
-        upVotesBy: detailThread.upVotesBy.filter((id) => id !== action.payload.userId),
-        downVotesBy: detailThread.downVotesBy.includes(action.payload.userId)
-          ? detailThread.downVotesBy.filter((id) => id !== action.payload.userId)
-          : detailThread.downVotesBy.concat(action.payload.userId)
+        ...thread,
+        upVotesBy: thread.upVotesBy.filter((id) => id !== action.payload.userId),
+        downVotesBy: thread.downVotesBy.includes(action.payload.userId)
+          ? thread.downVotesBy.filter((id) => id !== action.payload.userId)
+          : thread.downVotesBy.concat(action.payload.userId)
       };
     case ActionType.NEUTRALVOTE_THREAD:
-      if (detailThread == null) return detailThread;
+      if (thread == null) return thread;
       return {
-        ...detailThread,
-        upVotesBy: detailThread.upVotesBy.filter((id) => id !== action.payload.userId),
-        downVotesBy: detailThread.upVotesBy.filter((id) => id !== action.payload.userId)
+        ...thread,
+        upVotesBy: thread.upVotesBy.filter((id) => id !== action.payload.userId),
+        downVotesBy: thread.upVotesBy.filter((id) => id !== action.payload.userId)
       };
     case ActionType.CREATE_COMMENT:
-      if (detailThread == null) return detailThread;
+      if (thread == null) return thread;
       return {
-        ...detailThread,
-        comments: [action.payload.comment, ...detailThread.comments]
+        ...thread,
+        comments: [action.payload.comment, ...thread.comments]
       };
     case ActionType.UPVOTE_THREAD_COMMENT:
-      if (detailThread == null) return detailThread;
+      if (thread == null) return thread;
       return {
-        ...detailThread,
-        comments: detailThread.comments.map((comment) => {
+        ...thread,
+        comments: thread.comments.map((comment) => {
           if (comment.id === action.payload.commentId) {
             return {
               ...comment,
@@ -57,10 +57,10 @@ function threadDetailReducer
         })
       };
     case ActionType.DOWNVOTE_THREAD_COMMENT:
-      if (detailThread == null) return detailThread;
+      if (thread == null) return thread;
       return {
-        ...detailThread,
-        comments: detailThread.comments.map((comment) => {
+        ...thread,
+        comments: thread.comments.map((comment) => {
           if (comment.id === action.payload.commentId) {
             return {
               ...comment,
@@ -74,10 +74,10 @@ function threadDetailReducer
         })
       };
     case ActionType.NEUTRALVOTE_THREAD_COMMENT:
-      if (detailThread == null) return detailThread;
+      if (thread == null) return thread;
       return {
-        ...detailThread,
-        comments: detailThread.comments.map((comment) => {
+        ...thread,
+        comments: thread.comments.map((comment) => {
           if (comment.id === action.payload.commentId) {
             return {
               ...comment,
@@ -89,7 +89,7 @@ function threadDetailReducer
         })
       };
     default:
-      return detailThread;
+      return thread;
   }
 }
 

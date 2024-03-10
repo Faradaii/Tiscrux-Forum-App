@@ -1,5 +1,5 @@
 import { type Dispatch } from '@reduxjs/toolkit';
-import type { Comment, ThreadDetail } from '../../../types';
+import type { Comment, Thread } from '../../../types';
 import api from '../../utils/api';
 
 enum ActionType {
@@ -17,7 +17,7 @@ enum ActionType {
 interface ReceiveThreadDetailAction {
   type: ActionType.RECEIVE_THREAD_DETAIL
   payload: {
-    detailThread: ThreadDetail
+    thread: Thread
   }
 }
 
@@ -94,11 +94,11 @@ type ThreadAction =
   | DownvoteThreadCommentAction
   | NeutralvoteThreadCommentAction;
 
-function receiveThreadDetailActionCreator (detailThread: ThreadDetail): ReceiveThreadDetailAction {
+function receiveThreadDetailActionCreator (thread: Thread): ReceiveThreadDetailAction {
   return {
     type: ActionType.RECEIVE_THREAD_DETAIL,
     payload: {
-      detailThread
+      thread
     }
   };
 }
@@ -192,8 +192,8 @@ function asyncReceiveDetailThread (threadId: string) {
   return async (dispatch: Dispatch<ThreadAction>) => {
     try {
       dispatch(clearThreadDetailActionCreator());
-      const detailThread = await api.getThreadDetail(threadId);
-      dispatch(receiveThreadDetailActionCreator(detailThread));
+      const thread = await api.getThreadDetail(threadId);
+      dispatch(receiveThreadDetailActionCreator(thread));
     } catch (error) {
       alert(error.message);
     }
@@ -225,6 +225,44 @@ function asyncToggleVoteThread
     }
   };
 }
+function asyncCreateComment (threadId: string, content: string) {
+  return async (dispatch: Dispatch<ThreadAction>) => {
+    try {
+      const comment = await api.createComment({ threadId, content });
+      dispatch(createCommentActionCreator(comment));
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+}
+
+function asyncToggleVoteComment
+(threadId: string, commentId: string, userId: string, voteType: string) {
+  return async (dispatch: Dispatch<ThreadAction>) => {
+    switch (voteType) {
+      case 'upVote':
+        const { status: upVote } = await api.upvoteThreadComment(threadId, commentId);
+        dispatch(upvoteThreadCommentActionCreator(threadId, commentId, userId));
+        if (upVote !== 'success') {
+          dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
+        }
+        break;
+      case 'downVote':
+        const { status: downVote } = await api.downvoteThreadComment(threadId, commentId);
+        dispatch(downvoteThreadCommentActionCreator(threadId, commentId, userId));
+        if (downVote !== 'success') {
+          dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
+        }
+        break;
+      default:
+        const { status: neutralVote } = await api.neutralvoteThreadComment(threadId, commentId);
+        if (neutralVote === 'success') {
+          dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
+        }
+        break;
+    }
+  };
+}
 
 export {
   ActionType,
@@ -238,7 +276,9 @@ export {
   downvoteThreadCommentActionCreator,
   neutralvoteThreadCommentActionCreator,
   asyncReceiveDetailThread,
-  asyncToggleVoteThread
+  asyncToggleVoteThread,
+  asyncCreateComment,
+  asyncToggleVoteComment
 };
 
 export type {
