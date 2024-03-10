@@ -28,12 +28,12 @@ function ButtonLink ({ action }: ButtonLinkProps): JSX.Element {
       className: ''
     },
     Leaderboard: {
-      path: '/Leaderboard',
+      path: '/leaderboard',
       label: 'Leaderboard',
       className: ''
     },
     Pengaturan: {
-      path: '/Pengaturan',
+      path: '/pengaturan',
       label: 'Pengaturan',
       className: ''
     }
