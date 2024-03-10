@@ -1,4 +1,4 @@
-import type { AllUser, LeaderboardData, ThreadDetail, Threads, User, VoteThread, VoteComment, VoteResponse } from '../../types';
+import type { LeaderboardData, ThreadDetail, Threads, User, VoteResponse } from '../../types';
 
 const api = (() => {
   const BASE_URL: string = 'https://forum-api.dicoding.dev/v1';
@@ -84,7 +84,7 @@ const api = (() => {
     return user;
   }
 
-  async function getAllUsers (): Promise<AllUser> {
+  async function getAllUsers (): Promise<User[]> {
     const response = await fetch(`${BASE_URL}/users`);
 
     const responseJson = await response.json();
