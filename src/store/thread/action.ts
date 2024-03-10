@@ -205,15 +205,17 @@ function asyncToggleVoteThread
   return async (dispatch: Dispatch<ThreadAction>) => {
     switch (voteType) {
       case 'upVote':
+        dispatch(upvoteThreadActionCreator(threadId, userId));
         const { status: upVoteStatus } = await api.upvoteThread(threadId);
-        if (upVoteStatus === 'success') {
-          dispatch(upvoteThreadActionCreator(threadId, userId));
+        if (upVoteStatus !== 'success') {
+          dispatch(neutralvoteThreadActionCreator(threadId, userId));
         }
         break;
       case 'downVote':
+        dispatch(downvoteThreadActionCreator(threadId, userId));
         const { status: downVoteStatus } = await api.downvoteThread(threadId);
         if (downVoteStatus === 'success') {
-          dispatch(downvoteThreadActionCreator(threadId, userId));
+          dispatch(neutralvoteThreadActionCreator(threadId, userId));
         }
         break;
       default:
@@ -237,19 +239,20 @@ function asyncCreateComment (threadId: string, content: string) {
 }
 
 function asyncToggleVoteComment
-(threadId: string, commentId: string, userId: string, voteType: string) {
+({ threadId, commentId, userId, voteType }:
+{ threadId: string, commentId: string, userId: string, voteType: string }) {
   return async (dispatch: Dispatch<ThreadAction>) => {
     switch (voteType) {
       case 'upVote':
-        const { status: upVote } = await api.upvoteThreadComment(threadId, commentId);
         dispatch(upvoteThreadCommentActionCreator(threadId, commentId, userId));
+        const { status: upVote } = await api.upvoteThreadComment(threadId, commentId);
         if (upVote !== 'success') {
           dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
         }
         break;
       case 'downVote':
-        const { status: downVote } = await api.downvoteThreadComment(threadId, commentId);
         dispatch(downvoteThreadCommentActionCreator(threadId, commentId, userId));
+        const { status: downVote } = await api.downvoteThreadComment(threadId, commentId);
         if (downVote !== 'success') {
           dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
         }

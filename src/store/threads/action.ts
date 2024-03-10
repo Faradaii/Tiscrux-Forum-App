@@ -24,7 +24,7 @@ export interface ThreadAddAction {
   }
 }
 
-interface VoteAction {
+export interface VoteAction {
   type: ActionType
   payload: {
     threadId: string
@@ -96,15 +96,17 @@ function asyncToggleVoteThread
   return async (dispatch: Dispatch<VoteAction>) => {
     switch (voteType) {
       case 'upVote':
+        dispatch(upvoteThreadActionCreator(threadId, userId));
         const { status: upVoteStatus } = await api.upvoteThread(threadId);
-        if (upVoteStatus === 'success') {
-          dispatch(upvoteThreadActionCreator(threadId, userId));
+        if (upVoteStatus !== 'success') {
+          dispatch(neutralvoteThreadActionCreator(threadId, userId));
         }
         break;
       case 'downVote':
+        dispatch(downvoteThreadActionCreator(threadId, userId));
         const { status: downVoteStatus } = await api.downvoteThread(threadId);
-        if (downVoteStatus === 'success') {
-          dispatch(downvoteThreadActionCreator(threadId, userId));
+        if (downVoteStatus !== 'success') {
+          dispatch(neutralvoteThreadActionCreator(threadId, userId));
         }
         break;
       default:
