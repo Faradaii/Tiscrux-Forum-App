@@ -5,7 +5,7 @@ enum ActionType {
   RECEIVE_USERS = 'RECEIVE_USERS',
 }
 
-interface ReceiveUsersAction {
+export interface ReceiveUsersAction {
   type: ActionType.RECEIVE_USERS
   payload: {
     users: User[]

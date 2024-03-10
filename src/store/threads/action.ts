@@ -2,9 +2,19 @@ import { type Dispatch } from '@reduxjs/toolkit';
 import api from '../../utils/api';
 import type { Threads } from '../../../types';
 
+enum ActionType {
+  RECEIVE_THREADS = 'RECEIVE_THREADS',
+  ADD_THREAD = 'ADD_THREAD',
+  UPVOTE_THREAD = 'UPVOTE_THREAD',
+  DOWNVOTE_THREAD = 'DOWNVOTE_THREAD',
+  NEUTRALVOTE_THREAD = 'NEUTRALVOTE_THREAD',
+}
+
 export interface ThreadAction {
   type: ActionType.RECEIVE_THREADS
-  payload: Threads[]
+  payload: {
+    threads: Threads[]
+  }
 }
 
 export interface ThreadAddAction {
@@ -12,14 +22,6 @@ export interface ThreadAddAction {
   payload: {
     thread: Threads
   }
-}
-
-enum ActionType {
-  RECEIVE_THREADS = 'RECEIVE_THREADS',
-  ADD_THREAD = 'ADD_THREAD',
-  UPVOTE_THREAD = 'UPVOTE_THREAD',
-  DOWNVOTE_THREAD = 'DOWNVOTE_THREAD',
-  NEUTRALVOTE_THREAD = 'NEUTRALVOTE_THREAD',
 }
 
 interface VoteAction {
@@ -34,7 +36,7 @@ function receiveThreadsActionCreator (threads: Threads[]): ThreadAction {
   return {
     type: ActionType.RECEIVE_THREADS,
     payload: {
-      ...threads
+      threads
     }
   };
 }

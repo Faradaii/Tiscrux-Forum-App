@@ -3,7 +3,9 @@ import type { User } from '../../../types';
 
 type AuthUserState = User | null;
 
-const authUserReducer = (authUser: AuthUserState = null, action: SetAuthUserAction | UnsetAuthUserAction): AuthUserState => {
+const authUserReducer =
+(authUser: AuthUserState = null, action: SetAuthUserAction | UnsetAuthUserAction):
+AuthUserState => {
   switch (action.type) {
     case ActionType.SET_AUTH_USER:
       return action.payload.authUser;
@@ -12,6 +14,6 @@ const authUserReducer = (authUser: AuthUserState = null, action: SetAuthUserActi
     default:
       return authUser;
   }
-}
+};
 
 export default authUserReducer;

@@ -1,11 +1,18 @@
-import { ActionType, type ThreadAddAction, type ThreadAction } from './action';
-import type { Threads } from '../../../types';
+import { ActionType } from './action';
+import { type Threads } from '../../../types';
 
-function threadsReducer
-(threads: Threads[] = [], action: ThreadAction | ThreadAddAction): Threads[] {
+interface Action {
+  type: ActionType
+  payload: {
+    threads?: Threads[]
+    thread?: Threads
+  }
+}
+
+function threadsReducer (threads: Threads[] = [], action: Action): Threads[] {
   switch (action.type) {
     case ActionType.RECEIVE_THREADS:
-      return action.payload;
+      return action.payload.threads;
     case ActionType.ADD_THREAD:
       return [action.payload.thread, ...threads];
     default:
