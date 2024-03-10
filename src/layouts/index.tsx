@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 import { asyncPreloadProcess } from '@/store/isPreload/action';
 import { type User } from '../../types';
 
-const disableNavbar = ['/login', 'register'];
+const disableNavbar = ['/login', '/register', '/404'];
 
 export default function Layout ({ children }: { children: ReactNode | ReactNode[] }):
 JSX.Element | null {
