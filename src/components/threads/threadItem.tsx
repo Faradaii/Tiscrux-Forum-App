@@ -6,7 +6,7 @@ import {
   IoChatbubbleOutline
 } from 'react-icons/io5';
 import { convertDateFormat, captureImgSrc } from '../../utils';
-import { type Threads } from '../../../types';
+import { type Threads, type User } from '../../../types';
 
 export interface ThreadItemProps extends Threads {
   user: {
@@ -14,7 +14,7 @@ export interface ThreadItemProps extends Threads {
     name: string
     avatar: string
   }
-  authUser: string | null
+  authUser: User | null
   onVote: (voteData: { threadId: string, voteType: 'upVote' | 'downVote' | 'neutralVote' }) => void
 }
 
@@ -58,11 +58,11 @@ function ThreadItem ({
             }
           </div>
         </Link>
-        <div className="flex gap-3 justify-end">
+        <div className="flex gap-3 justify-end mt-4 mb-2">
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVote({ threadId: id, voteType: upVotesBy.includes(authUser ?? '') ? 'neutralVote' : 'upVote' }); }}>
+            <button type="button" onClick={() => { onVote({ threadId: id, voteType: upVotesBy.includes(authUser?.id ?? '') ? 'neutralVote' : 'upVote' }); }}>
               {
-              upVotesBy.includes(authUser ?? '')
+              upVotesBy.includes(authUser?.id ?? '')
                 ? <IoArrowUpCircle className="w-6 h-6" />
                 : <IoArrowUpCircleOutline className="w-6 h-6" />
               }
@@ -70,9 +70,9 @@ function ThreadItem ({
             <span>{upVotesBy.length}</span>
           </div>
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVote({ threadId: id, voteType: downVotesBy.includes(authUser ?? '') ? 'neutralVote' : 'downVote' }); }}>
+            <button type="button" onClick={() => { onVote({ threadId: id, voteType: downVotesBy.includes(authUser?.id ?? '') ? 'neutralVote' : 'downVote' }); }}>
               {
-              downVotesBy.includes(authUser ?? '')
+              downVotesBy.includes(authUser?.id ?? '')
                 ? <IoArrowDownCircle className="w-6 h-6" />
                 : <IoArrowDownCircleOutline className="w-6 h-6" />
               }
