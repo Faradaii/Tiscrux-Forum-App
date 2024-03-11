@@ -10,6 +10,8 @@ import {
 } from '../../store/thread/action';
 import ThreadDetail from '../../components/threads/ThreadDetail';
 import { type RootState } from '@/store/store';
+import SkeletonThreadDetail from '@/components/skeleton/SkeletonThreadDetail';
+import SkeletonThreadCategory from '@/components/skeleton/SkeletonThreadCategory';
 
 function DetailPage (): JSX.Element {
   const {
@@ -58,10 +60,6 @@ function DetailPage (): JSX.Element {
     }
   };
 
-  if (thread === null) {
-    return <h1>ok</h1>;
-  }
-
   return (
     <div className="flex">
       <div className="grow h-screen p-5 w-max-70">
@@ -81,7 +79,7 @@ function DetailPage (): JSX.Element {
                 />
                 )
               : (
-                <div>Loading...</div>
+                <SkeletonThreadDetail />
                 )
             }
         </div>
@@ -89,12 +87,20 @@ function DetailPage (): JSX.Element {
       <div className="h-screen p-5 w-max-30 grow">
         <h4 className="font-semibold text-2xl block">Related Topic</h4>
         <div className="bg-black-dark p-1 m-3 rounded-lg">
-          <div className="my-3">
-            <h1 className="w-5/6 m-auto text-lg font-medium">
-              <span>#</span>
-              {thread?.category}
-            </h1>
-          </div>
+          {
+            (thread !== null)
+              ? (
+                <div className="my-3">
+                  <h1 className="w-5/6 m-auto text-lg font-medium">
+                    <span>#</span>
+                    {thread?.category}
+                  </h1>
+                </div>
+                )
+              : (
+                <SkeletonThreadCategory />
+                )
+          }
         </div>
       </div>
     </div>

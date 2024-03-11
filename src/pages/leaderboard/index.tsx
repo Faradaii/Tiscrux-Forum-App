@@ -4,6 +4,7 @@ import LeaderboardList from '../../components/leaderboards/LeaderboardList';
 import { asyncGetLeaderboard } from '../../store/leaderboards/action';
 import CruxCard from '../../components/card/CruxCard';
 import type { RootState } from '../../store/store';
+import SkeletonLeaderboardList from '@/components/skeleton/SkeletonLeaderboardList';
 
 function LeaderboardPage (): JSX.Element {
   const leaderboards = useSelector((state: RootState) => state.leaderboards);
@@ -18,7 +19,11 @@ function LeaderboardPage (): JSX.Element {
       <div className="grow h-screen p-5 w-max-70">
         <h1 className="font-semibold text-3xl sticky">Leaderboard</h1>
         <div className="py-5">
-          <LeaderboardList leaderboards={leaderboards} />
+          {
+            ((leaderboards?.length !== 0))
+              ? <LeaderboardList leaderboards={leaderboards} />
+              : <SkeletonLeaderboardList />
+          }
         </div>
       </div>
       <div className="h-screen p-5 w-max-30">
