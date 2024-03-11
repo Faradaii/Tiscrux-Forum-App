@@ -1,6 +1,7 @@
 import { type Dispatch } from '@reduxjs/toolkit';
 import api from '../../utils/api';
-import type { Threads } from '../../../types';
+import type { Thread, Threads } from '../../../types';
+import { RootState } from '../store';
 
 enum ActionType {
   RECEIVE_THREADS = 'RECEIVE_THREADS',
@@ -93,26 +94,49 @@ function asyncAddThread ({ title = '', body = '', category = '' }: { title?: str
 
 function asyncToggleVoteThread
 ({ threadId, userId, voteType }: { threadId: string, userId: string, voteType: string }) {
-  return async (dispatch: Dispatch<VoteAction>) => {
+  return async (dispatch: Dispatch<VoteAction>, getState: RootState) => {
+    const store = getState();
+    const { upVotesBy, downVotesBy } = store.threads
+      .find((thread: Thread) => thread.id === threadId);
+
     switch (voteType) {
       case 'upVote':
         dispatch(upvoteThreadActionCreator(threadId, userId));
-        const { status: upVoteStatus } = await api.upvoteThread(threadId);
-        if (upVoteStatus !== 'success') {
-          dispatch(neutralvoteThreadActionCreator(threadId, userId));
+
+        try {
+          await api.upvoteThread(threadId);
+        } catch (error) {
+          if (downVotesBy.includes(userId)) {
+            dispatch(downvoteThreadActionCreator(threadId, userId));
+          } else {
+            dispatch(neutralvoteThreadActionCreator(threadId, userId));
+          }
         }
         break;
       case 'downVote':
         dispatch(downvoteThreadActionCreator(threadId, userId));
-        const { status: downVoteStatus } = await api.downvoteThread(threadId);
-        if (downVoteStatus !== 'success') {
-          dispatch(neutralvoteThreadActionCreator(threadId, userId));
+
+        try {
+          await api.downvoteThread(threadId);
+        } catch (error) {
+          if (upVotesBy.includes(userId)) {
+            dispatch(upvoteThreadActionCreator(threadId, userId));
+          } else {
+            dispatch(neutralvoteThreadActionCreator(threadId, userId));
+          }
         }
         break;
       default:
-        const { status: neutralVoteStatus } = await api.neutralvoteThread(threadId);
-        if (neutralVoteStatus === 'success') {
-          dispatch(neutralvoteThreadActionCreator(threadId, userId));
+        dispatch(neutralvoteThreadActionCreator(threadId, userId));
+        try {
+          await api.neutralvoteThread(threadId);
+        } catch (error) {
+          if (upVotesBy.includes(userId)) {
+            dispatch(upvoteThreadActionCreator(threadId, userId));
+          }
+          if (downVotesBy.includes(userId)) {
+            dispatch(downvoteThreadActionCreator(threadId, userId));
+          }
         }
         break;
     }

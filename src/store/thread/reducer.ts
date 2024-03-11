@@ -31,7 +31,7 @@ function threadDetailReducer
       return {
         ...thread,
         upVotesBy: thread.upVotesBy.filter((id) => id !== action.payload.userId),
-        downVotesBy: thread.upVotesBy.filter((id) => id !== action.payload.userId)
+        downVotesBy: thread.downVotesBy.filter((id) => id !== action.payload.userId)
       };
     case ActionType.CREATE_COMMENT:
       if (thread == null) return thread;

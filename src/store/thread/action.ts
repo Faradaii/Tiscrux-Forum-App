@@ -1,6 +1,7 @@
 import { type Dispatch } from '@reduxjs/toolkit';
 import type { Comment, Thread } from '../../../types';
 import api from '../../utils/api';
+import { type RootState } from '../store';
 
 enum ActionType {
   RECEIVE_THREAD_DETAIL = 'RECEIVE_THREAD_DETAIL',
@@ -202,26 +203,48 @@ function asyncReceiveDetailThread (threadId: string) {
 
 function asyncToggleVoteThread
 ({ threadId, userId, voteType }: { threadId: string, userId: string, voteType: string }) {
-  return async (dispatch: Dispatch<ThreadAction>) => {
+  return async (dispatch: Dispatch<ThreadAction>, getState: RootState) => {
+    const store = getState();
+    const { upVotesBy, downVotesBy } = store.thread;
+
     switch (voteType) {
       case 'upVote':
         dispatch(upvoteThreadActionCreator(threadId, userId));
-        const { status: upVoteStatus } = await api.upvoteThread(threadId);
-        if (upVoteStatus !== 'success') {
-          dispatch(neutralvoteThreadActionCreator(threadId, userId));
+
+        try {
+          await api.upvoteThread(threadId);
+        } catch (error) {
+          if (downVotesBy.includes(userId)) {
+            dispatch(downvoteThreadActionCreator(threadId, userId));
+          } else {
+            dispatch(neutralvoteThreadActionCreator(threadId, userId));
+          }
         }
         break;
       case 'downVote':
         dispatch(downvoteThreadActionCreator(threadId, userId));
-        const { status: downVoteStatus } = await api.downvoteThread(threadId);
-        if (downVoteStatus === 'success') {
-          dispatch(neutralvoteThreadActionCreator(threadId, userId));
+
+        try {
+          await api.downvoteThread(threadId);
+        } catch (error) {
+          if (upVotesBy.includes(userId)) {
+            dispatch(upvoteThreadActionCreator(threadId, userId));
+          } else {
+            dispatch(neutralvoteThreadActionCreator(threadId, userId));
+          }
         }
         break;
       default:
-        const { status: neutralVoteStatus } = await api.neutralvoteThread(threadId);
-        if (neutralVoteStatus === 'success') {
-          dispatch(neutralvoteThreadActionCreator(threadId, userId));
+        dispatch(neutralvoteThreadActionCreator(threadId, userId));
+        try {
+          await api.neutralvoteThread(threadId);
+        } catch (error) {
+          if (upVotesBy.includes(userId)) {
+            dispatch(upvoteThreadActionCreator(threadId, userId));
+          }
+          if (downVotesBy.includes(userId)) {
+            dispatch(downvoteThreadActionCreator(threadId, userId));
+          }
         }
         break;
     }
@@ -241,26 +264,48 @@ function asyncCreateComment (threadId: string, content: string) {
 function asyncToggleVoteComment
 ({ threadId, commentId, userId, voteType }:
 { threadId: string, commentId: string, userId: string, voteType: string }) {
-  return async (dispatch: Dispatch<ThreadAction>) => {
+  return async (dispatch: Dispatch<ThreadAction>, getState: RootState) => {
+    const store = getState();
+    const { upVotesBy, downVotesBy } = store.thread.comments
+      .find((comment: Comment) => comment.id === commentId);
+
     switch (voteType) {
       case 'upVote':
         dispatch(upvoteThreadCommentActionCreator(threadId, commentId, userId));
-        const { status: upVote } = await api.upvoteThreadComment(threadId, commentId);
-        if (upVote !== 'success') {
+
+        try {
+          await api.upvoteThreadComment(threadId, commentId);
+        } catch (error) {
           dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
+          if (downVotesBy.includes(userId)) {
+            dispatch(downvoteThreadCommentActionCreator(threadId, commentId, userId));
+          }
         }
         break;
       case 'downVote':
         dispatch(downvoteThreadCommentActionCreator(threadId, commentId, userId));
-        const { status: downVote } = await api.downvoteThreadComment(threadId, commentId);
-        if (downVote !== 'success') {
+
+        try {
+          await api.downvoteThreadComment(threadId, commentId);
+        } catch (error) {
           dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
+          if (upVotesBy.includes(userId)) {
+            dispatch(upvoteThreadCommentActionCreator(threadId, commentId, userId));
+          }
         }
         break;
       default:
-        const { status: neutralVote } = await api.neutralvoteThreadComment(threadId, commentId);
-        if (neutralVote === 'success') {
-          dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
+        dispatch(neutralvoteThreadCommentActionCreator(threadId, commentId, userId));
+
+        try {
+          await api.neutralvoteThreadComment(threadId, commentId);
+        } catch (error) {
+          if (upVotesBy.includes(userId)) {
+            dispatch(upvoteThreadCommentActionCreator(threadId, commentId, userId));
+          }
+          if (downVotesBy.includes(userId)) {
+            dispatch(downvoteThreadCommentActionCreator(threadId, commentId, userId));
+          }
         }
         break;
     }
