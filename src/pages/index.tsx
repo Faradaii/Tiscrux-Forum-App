@@ -7,6 +7,8 @@ import ThreadList from '../components/threads/ThreadList';
 import CruxCard from '../components/card/CruxCard';
 import { countTopicsAndTotal } from '../utils';
 import ButtonLink from '../components/buttons/ButtonLink';
+import SkeletonThreadList from '@/components/skeleton/SkeletonThreadList';
+import SkeletonThreadCategory from '@/components/skeleton/SkeletonThreadCategory';
 
 function HomePage (): JSX.Element {
   const { threads, users, authUser, isPreload } =
@@ -16,7 +18,7 @@ function HomePage (): JSX.Element {
     users: state.users,
     isPreload: state.isPreload
   }));
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState<string[]>([]);
 
   const dispatch = useDispatch();
 
@@ -34,9 +36,17 @@ function HomePage (): JSX.Element {
     }
   };
 
-  const onClearFilter = ((): void => {
-    setFilter('');
-  });
+  const onClearFilter = (): void => {
+    setFilter([]);
+  };
+
+  const onClearOneFilter = (value): void => {
+    setFilter((prevState) => prevState.filter((state) => state !== value));
+  };
+
+  const addFilter = (newState: string): void => {
+    setFilter((prevState) => [...prevState, newState]);
+  };
 
   if (isPreload) {
     return <h1>loading</h1>;
@@ -48,8 +58,10 @@ function HomePage (): JSX.Element {
     authUser
   }));
 
-  const threadFiltered = threadList
-    .filter((thread) => thread.category.includes(filter));
+  const threadFiltered = filter.length === 0
+    ? threadList
+    : threadList
+      .filter((thread) => filter.includes(thread.category));
 
   const topicList = countTopicsAndTotal(threadList);
 
@@ -67,34 +79,42 @@ function HomePage (): JSX.Element {
                 <ThreadList threads={threadFiltered} onVote={onToggleVoteAction} />
                 )
               : (
-                <div>Loading...</div>
+                <SkeletonThreadList />
                 )
           }
         </div>
       </div>
       <div className="h-screen p-5 w-max-30 grow">
         <h4 className="font-semibold text-2xl block">Popular Topic</h4>
-        <div className="bg-black-dark p-3 m-3 rounded-lg">
+        <div className="bg-black-dark p-4 m-3 rounded-lg flex flex-col">
           {
-            topicList.map(({ topic, totalPost }) => (
-              <div className="flex w-5/6 m-auto" key={topic}>
-                <button type="button" className="w-full border text-left" onClick={() => { setFilter(topic); }}>
-                  <div className="my-3 grow">
-                    <h1 className="text-lg font-medium">
-                      <span>#</span>
-                      {topic}
-                    </h1>
-                    <h1 className="text-sm font-light text-gray-500">
-                      {totalPost}
-                      <span> posts</span>
-                    </h1>
-                  </div>
-                </button>
-                {
-                  filter === topic && <button type="button" onClick={onClearFilter}>x</button>
-                }
-              </div>
-            ))
+            (filter.length > 1) && <button type="button" className="self-end text-sm" onClick={() => { onClearFilter(); }}>Hapus filter</button>
+          }
+          {
+            (threads?.length !== 0)
+              ? (
+                  topicList.map(({ topic, totalPost }) => (
+                    <div className="flex w-5/6 m-auto" key={topic}>
+                      <button type="button" className="w-full text-left" onClick={() => { addFilter(topic); }}>
+                        <div className="my-3 grow">
+                          <h1 className="text-lg font-medium">
+                            <span>#</span>
+                            {topic}
+                          </h1>
+                          <h1 className="text-sm font-light text-gray-500">
+                            {totalPost}
+                            <span> posts</span>
+                          </h1>
+                        </div>
+                      </button>
+                      {
+                        filter.includes(topic) && <button type="button" onClick={() => { onClearOneFilter(topic); }}>x</button>
+                      }
+                    </div>
+                  )))
+              : (
+                <SkeletonThreadCategory />
+                )
           }
         </div>
         {
