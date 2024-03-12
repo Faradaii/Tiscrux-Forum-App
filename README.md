@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tiscrux Forum App
+
+Aplikasi forum open-source yang memungkinkan pengguna untuk berkolaborasi, bertukar ide, dan memperluas pengetahuan mereka. Dibangun untuk memenuhi submission dicoding idcamp react dev expert dengan teknologi NextJs, Tailwind.
 
 ## Getting Started
 
