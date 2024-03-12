@@ -3,9 +3,11 @@ import Link from 'next/link';
 
 interface ButtonLinkProps {
   action: 'Login' | 'Register' | 'Beranda' | 'buatThread' | 'Leaderboard' | 'Pengaturan'
+  optionalText?: string
+  className?: string
 }
 
-function ButtonLink ({ action }: ButtonLinkProps): JSX.Element {
+function ButtonLink ({ action, optionalText, className }: ButtonLinkProps): JSX.Element {
   const actionName = {
     Login: {
       path: '/login',
@@ -31,17 +33,12 @@ function ButtonLink ({ action }: ButtonLinkProps): JSX.Element {
       path: '/leaderboard',
       label: 'Leaderboard',
       className: ''
-    },
-    Pengaturan: {
-      path: '/pengaturan',
-      label: 'Pengaturan',
-      className: ''
     }
   };
 
   return (
-    <button type="button" className={`p-2 block text-center ${actionName[action].className}`}>
-      <Link href={actionName[action].path}>{actionName[action].label}</Link>
+    <button type="button" className={`p-2 block text-center ${className}`}>
+      <Link href={actionName[action].path}>{optionalText ?? actionName[action].label}</Link>
     </button>
   );
 }
