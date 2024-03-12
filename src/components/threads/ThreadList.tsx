@@ -8,11 +8,11 @@ interface ThreadListProps {
 
 function ThreadList ({ threads, onVote }: ThreadListProps): JSX.Element {
   return (
-    <div>
+    <>
       {threads.map((thread) => (
         <ThreadItem key={thread.id} {...thread} onVote={onVote} />
       ))}
-    </div>
+    </>
   );
 }
 
