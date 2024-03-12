@@ -1,9 +1,9 @@
-import SkeletonCommentInput from "./SkeletonCommentInput";
-import SkeletonCommentItem from "./SkeletonCommentItem";
+import SkeletonCommentInput from './SkeletonCommentInput';
+import SkeletonCommentItem from './SkeletonCommentItem';
 
 function SkeletonThreadDetail (): JSX.Element {
   return (
-    <div className="p-5 m-3 rounded-md flex flex-col gap-2">
+    <div className="p-5 m-3 rounded-md flex flex-col gap-2 animate-pulse">
       <div className="px-4 py-2 dark:bg-dark-2-light bg-gray-200 rounded-lg">
         <div className="grow py-2 flex items-center px-3">
           <div className="w-14 h-14 me-4 rounded-full dark:bg-dark-2-light bg-gray-100" />
