@@ -25,25 +25,25 @@ function ThreadItem ({
   const { srcImageValue, newBodyRemovedImgTag = '' } = captureImgSrc(body);
 
   return (
-    <div className="border flex p-5 m-5 rounded-md">
+    <div className="border flex p-5 m-7 rounded-md max-w-full">
       <div>
-        <img src={user.avatar} alt="" className="min-w-14 max-w-14 me-4 rounded-full" />
+        <img src={user?.avatar} alt="" className="min-w-14 max-w-14 me-4 rounded-full" />
       </div>
-      <div className="grow me-3">
+      <div className="grow me-3 flex-1 overflow-hidden">
         <Link href={`/threads/${id}`}>
           <div className="flex">
             <div className="grow">
-              <h5 className="font-semibold">{user.name}</h5>
+              <h5 className="font-semibold">{user?.name}</h5>
               <small>
                 @
-                {user.id}
+                {user?.id}
               </small>
             </div>
             <small>{convertDateFormat(createdAt)}</small>
           </div>
-          <div className="mt-2">
+          <div className="mt-2 max-w-prose">
             <h4 className="font-semibold text-lg">{title}</h4>
-            <p className="mt-1 text-justify line-clamp-6">{parse(newBodyRemovedImgTag)}</p>
+            <p className="mt-1 text-justify line-clamp-6 break-words">{parse(newBodyRemovedImgTag)}</p>
             <p className="text-primary text-sm my-2">
               #
               {category}
