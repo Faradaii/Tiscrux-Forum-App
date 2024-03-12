@@ -206,12 +206,6 @@ const api = (() => {
 
     const responseJson = await response.json();
 
-    const { status, message }: { status: string, message: string | undefined } = responseJson;
-
-    if (status !== 'success') {
-      throw new Error(message);
-    }
-
     return responseJson;
   }
 
@@ -221,12 +215,6 @@ const api = (() => {
     });
 
     const responseJson = await response.json();
-
-    const { status, message }: { status: string, message: string | undefined } = responseJson;
-
-    if (status !== 'success') {
-      throw new Error(message);
-    }
 
     return responseJson;
   }
@@ -289,6 +277,7 @@ const api = (() => {
     const responseJson = await response.json();
 
     const { status, message }: { status: string, message: string | undefined } = responseJson;
+    console.log(threadId);
 
     if (status !== 'success') {
       throw new Error(message);

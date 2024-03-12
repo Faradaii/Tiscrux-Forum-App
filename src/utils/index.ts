@@ -88,8 +88,16 @@ function convertDateFormat (dateString: string, formatType: number = 0): string 
   return `${hours}.${minutes} • ${day} ${month} ${year}`;
 }
 
+function getDefaultBrowserTheme (): string {
+  if ((typeof window !== 'undefined') && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+  return 'light';
+}
+
 export {
   convertDateFormat,
   captureImgSrc,
-  countTopicsAndTotal
+  countTopicsAndTotal,
+  getDefaultBrowserTheme
 };
