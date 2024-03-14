@@ -1,4 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import { loadingBarReducer } from 'react-redux-loading-bar';
 import authUserReducer from './authUser/reducer';
 import isPreloadReducer from './isPreload/reducer';
 import leaderboardsReducer from './leaderboards/reducer';
@@ -12,7 +13,8 @@ export const rootReducer = combineReducers({
   leaderboards: leaderboardsReducer,
   thread: threadReducer,
   threads: threadsReducer,
-  users: usersReducer
+  users: usersReducer,
+  loadingBar: loadingBarReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
