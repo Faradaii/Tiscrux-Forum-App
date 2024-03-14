@@ -16,7 +16,7 @@ function RegisterInput ({ register }: Props): JSX.Element {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     register({ name, email, password });
-    push('/login');
+    void push('/login');
   };
 
   return (

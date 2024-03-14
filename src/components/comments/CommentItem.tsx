@@ -32,9 +32,9 @@ function CommentItem (props: Props): JSX.Element {
         <p>{parse(content)}</p>
         <div className="flex gap-3 justify-end">
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVoteComment({ commentId: id, voteType: upVotesBy.includes(authUser?.id) ? 'neutralVote' : 'upVote' }); }}>
+            <button type="button" onClick={() => { onVoteComment({ commentId: id, voteType: upVotesBy.includes(authUser?.id ?? '') ? 'neutralVote' : 'upVote' }); }}>
               {
-              upVotesBy.includes(authUser?.id)
+              upVotesBy.includes(authUser?.id ?? '')
                 ? <MdThumbUp className="w-4 h-4" />
                 : <MdOutlineThumbUp className="w-4 h-4" />
               }
@@ -42,9 +42,9 @@ function CommentItem (props: Props): JSX.Element {
             <span>{upVotesBy.length}</span>
           </div>
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVoteComment({ commentId: id, voteType: downVotesBy.includes(authUser?.id) ? 'neutralVote' : 'downVote' }); }}>
+            <button type="button" onClick={() => { onVoteComment({ commentId: id, voteType: downVotesBy.includes(authUser?.id ?? '') ? 'neutralVote' : 'downVote' }); }}>
               {
-              downVotesBy.includes(authUser?.id)
+              downVotesBy.includes(authUser?.id ?? '')
                 ? <MdThumbDown className="w-4 h-4" />
                 : <MdOutlineThumbDown className="w-4 h-4" />
               }

@@ -11,7 +11,7 @@ interface Props {
   authUser: User | null
   onVote: (voteData: { threadId: string, voteType: string }) => void
   createCommentHandler: (content: string) => void
-  onVoteComment: (voteData: { threadId: string, commentId: string, voteType: string }) => void
+  onVoteComment: (voteData: { threadId?: string, commentId: string, voteType: string }) => void
 }
 
 function ThreadDetail ({
@@ -37,9 +37,11 @@ function ThreadDetail ({
       <div className="mt-2">
         <h4 className="font-semibold text-xl">{title}</h4>
         <br />
-        <p>{category}</p>
-        <p className="mt-1 text-justify">{parse(newBodyRemovedImgTag)}</p>
-        <br />
+        <p className="mt-1 text-justify">{(newBodyRemovedImgTag != null) ? parse(newBodyRemovedImgTag) : null}</p>
+        <p className="md:hidden my-3 text-primary">
+          #
+          {category}
+        </p>
         {
           (srcImageValue != null) && <img src={srcImageValue} alt={srcImageValue} className="w-full object-cover border rounded-xl" />
         }
@@ -48,9 +50,9 @@ function ThreadDetail ({
         <h6 className="font-medium">{convertDateFormat(createdAt, 1)}</h6>
         <div className="flex gap-3 justify-end">
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVote({ threadId: id, voteType: upVotesBy?.includes(authUser?.id) ? 'neutralVote' : 'upVote' }); }}>
+            <button type="button" onClick={() => { onVote({ threadId: id, voteType: upVotesBy?.includes(authUser?.id ?? '') ? 'neutralVote' : 'upVote' }); }}>
               {
-              upVotesBy?.includes(authUser?.id)
+              upVotesBy?.includes(authUser?.id ?? '')
                 ? <IoArrowUpCircle className="w-8 h-8" />
                 : <IoArrowUpCircleOutline className="w-8 h-8" />
               }
@@ -58,9 +60,9 @@ function ThreadDetail ({
             <span>{upVotesBy?.length}</span>
           </div>
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVote({ threadId: id, voteType: downVotesBy?.includes(authUser?.id) ? 'neutralVote' : 'downVote' }); }}>
+            <button type="button" onClick={() => { onVote({ threadId: id, voteType: downVotesBy?.includes(authUser?.id ?? '') ? 'neutralVote' : 'downVote' }); }}>
               {
-              downVotesBy?.includes(authUser?.id)
+              downVotesBy?.includes(authUser?.id ?? '')
                 ? <IoArrowDownCircle className="w-8 h-8" />
                 : <IoArrowDownCircleOutline className="w-8 h-8" />
               }

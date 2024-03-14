@@ -1,6 +1,7 @@
 import React from 'react';
 import useInput from '../../hooks/UseInput';
 import { type User } from '../../../types';
+import ButtonLink from '../buttons/ButtonLink';
 
 interface Props {
   authUser: User | null
@@ -16,8 +17,6 @@ function CommentInput ({ authUser, createCommentHandler }: Props): JSX.Element {
     changeContent('');
   };
 
-  console.log(authUser);
-
   return (
     <form className="flex gap-3 py-3" onSubmit={onSubmitHandler}>
       {(authUser != null)
@@ -29,7 +28,10 @@ function CommentInput ({ authUser, createCommentHandler }: Props): JSX.Element {
           </>
           )
         : (
-          <p>Silahkan login dulu</p>
+          <div className="flex items-center justify-between w-full">
+            <p>Silahkan masuk dengan akun anda agar dapat berdiskusi dengan jutaan orang! </p>
+            <ButtonLink action="Login" className="bg-primary rounded-lg px-4" />
+          </div>
           )}
     </form>
   );

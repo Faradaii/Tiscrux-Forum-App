@@ -30,7 +30,7 @@ function ThreadItem ({
         <img src={user?.avatar} alt="" className="min-w-14 max-w-14 me-4 rounded-full" />
       </div>
       <div className="grow me-3 flex-1 overflow-hidden">
-        <Link href={`/threads/${id}`}>
+        <Link href={`/thread/${id}`}>
           <div className="flex">
             <div className="grow">
               <h5 className="font-semibold">{user?.name}</h5>
@@ -60,9 +60,9 @@ function ThreadItem ({
         </Link>
         <div className="flex gap-3 justify-end mt-4 mb-2">
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVote({ threadId: id, voteType: upVotesBy.includes(authUser?.id) ? 'neutralVote' : 'upVote' }); }}>
+            <button type="button" onClick={() => { onVote({ threadId: id, voteType: upVotesBy.includes(authUser?.id ?? '') ? 'neutralVote' : 'upVote' }); }}>
               {
-              upVotesBy.includes(authUser?.id ?? '')
+              upVotesBy.includes(authUser?.id ?? '' ?? '')
                 ? <IoArrowUpCircle className="w-6 h-6" />
                 : <IoArrowUpCircleOutline className="w-6 h-6" />
               }
@@ -70,9 +70,9 @@ function ThreadItem ({
             <span>{upVotesBy.length}</span>
           </div>
           <div className="flex gap-1 items-center">
-            <button type="button" onClick={() => { onVote({ threadId: id, voteType: downVotesBy.includes(authUser?.id) ? 'neutralVote' : 'downVote' }); }}>
+            <button type="button" onClick={() => { onVote({ threadId: id, voteType: downVotesBy.includes(authUser?.id ?? '') ? 'neutralVote' : 'downVote' }); }}>
               {
-              downVotesBy.includes(authUser?.id ?? '')
+              downVotesBy.includes(authUser?.id ?? '' ?? '')
                 ? <IoArrowDownCircle className="w-6 h-6" />
                 : <IoArrowDownCircleOutline className="w-6 h-6" />
               }

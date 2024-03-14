@@ -1,18 +1,24 @@
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
 interface Props {
-  login: (credentials: { email: string, password: string }) => void
+  login: (credentials: { email: string, password: string }) => Promise<void>
 }
 
 function LoginInput ({ login }: Props): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isHide, setIsHide] = useState<boolean>(true);
+  const { push } = useRouter();
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    login({ email, password });
+    login({ email, password }).then(() => {
+      void push('/');
+    }).catch((error) => {
+      alert(error);
+    });
   };
 
   return (
