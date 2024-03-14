@@ -18,7 +18,7 @@ export interface ThreadItemProps extends Threads {
   onVote?: (voteData: { threadId: string, voteType: 'upVote' | 'downVote' | 'neutralVote' }) => void
 }
 
-function ThreadItem ({
+export function ThreadItem ({
   id, title, body, category, createdAt, upVotesBy, downVotesBy,
   totalComments, user, authUser, onVote
 }: ThreadItemProps): JSX.Element {
@@ -88,5 +88,3 @@ function ThreadItem ({
     </div>
   );
 }
-
-export default ThreadItem;
