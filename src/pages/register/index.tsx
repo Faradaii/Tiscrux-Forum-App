@@ -29,7 +29,7 @@ function RegisterPage (): JSX.Element {
             <RegisterInput register={onRegister} />
             <small>
               Sudah punya akun ?
-              <Link href="/Login" className="text-primary"> Masuk Sekarang </Link>
+              <Link href="/login" className="text-primary"> Masuk Sekarang </Link>
             </small>
           </div>
         </div>
