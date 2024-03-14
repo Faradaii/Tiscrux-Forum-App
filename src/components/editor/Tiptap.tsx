@@ -1,8 +1,9 @@
+import type { Dispatch, SetStateAction } from 'react';
 import Document from '@tiptap/extension-document';
 import Image from '@tiptap/extension-image';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
-import { EditorContent, useEditor } from '@tiptap/react';
+import { EditorContent, useEditor, type Editor } from '@tiptap/react';
 import React, { useEffect } from 'react';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
@@ -10,7 +11,7 @@ import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
 import { FaImage, FaAlignJustify, FaAlignRight, FaAlignCenter, FaAlignLeft, FaBold, FaHighlighter, FaItalic, FaStrikethrough } from 'react-icons/fa';
 
-function MenuBar ({ editor }): JSX.Element {
+function MenuBar ({ editor }: { editor: Editor }): JSX.Element {
   const addImage = (): void => {
     const url = window.prompt('URL');
 
@@ -20,7 +21,7 @@ function MenuBar ({ editor }): JSX.Element {
   };
 
   return (
-    <div className="flex gap-2 text-primary">
+    <div className="flex gap-2 text-primary flex-wrap">
       <button type="button" onClick={() => editor?.chain().focus().toggleBold().run()} className={`border rounded p-1 ${editor?.isActive('bold') ? 'is-active' : ''}`}>
         <FaBold />
       </button>
@@ -33,27 +34,34 @@ function MenuBar ({ editor }): JSX.Element {
       <button type="button" onClick={() => editor?.chain().focus().toggleHighlight().run()} className={`border rounded p-1 ${editor?.isActive('highlight') ? 'is-active' : ''}`}>
         <FaHighlighter />
       </button>
-      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('left').run()} className={`border rounded p-1 ${editor?.isActive({ textAlign: 'left' }) ? 'is-active' : ''}`}>
+      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('left').run()} className={`border rounded p-1 ${editor?.isActive('left') ? 'is-active' : ''}`}>
         <FaAlignLeft />
       </button>
-      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('center').run()} className={`border rounded p-1 ${editor?.isActive({ textAlign: 'center' }) ? 'is-active' : ''}`}>
+      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('center').run()} className={`border rounded p-1 ${editor?.isActive('center') ? 'is-active' : ''}`}>
         <FaAlignCenter />
       </button>
-      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('right').run()} className={`border rounded p-1 ${editor?.isActive({ textAlign: 'right' }) ? 'is-active' : ''}`}>
+      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('right').run()} className={`border rounded p-1 ${editor?.isActive('right') ? 'is-active' : ''}`}>
         <FaAlignRight />
       </button>
-      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('justify').run()} className={`border rounded p-1 ${editor?.isActive({ textAlign: 'justify' }) ? 'is-active' : ''}`}>
+      <button type="button" onClick={() => editor?.chain().focus().setTextAlign('justify').run()} className={`border rounded p-1 ${editor?.isActive('justify') ? 'is-active' : ''}`}>
         <FaAlignJustify />
       </button>
       <button type="button" onClick={addImage} className="border rounded p-1 flex gap-2 items-center">
         <FaImage />
-        <small>Tambahkan Gambar</small>
+        <small className="hidden md:block">Tambahkan Gambar</small>
       </button>
     </div>
   );
 }
 
-export default function Tiptap ({ onChange, dangerouslySetInnerHTML }): JSX.Element {
+interface TiptapProps {
+  onChange: Dispatch<SetStateAction<string>>
+  dangerouslySetInnerHTML: {
+    __html: string
+  }
+}
+
+export default function Tiptap ({ onChange, dangerouslySetInnerHTML }: TiptapProps): JSX.Element {
   const editor = useEditor({
     extensions: [
       Document,
@@ -78,8 +86,15 @@ export default function Tiptap ({ onChange, dangerouslySetInnerHTML }): JSX.Elem
   });
 
   useEffect(() => {
-    onChange(editor?.getHTML());
+    const html = editor?.getHTML();
+    if (html !== undefined) {
+      onChange(html);
+    }
   }, [editor, onChange]);
+
+  if (editor == null) {
+    return (<div>Loading editor...</div>);
+  }
 
   return (
     <div className="grow flex flex-col">
