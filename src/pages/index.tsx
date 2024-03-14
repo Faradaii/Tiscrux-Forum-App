@@ -40,7 +40,7 @@ function HomePage (): JSX.Element {
     setFilter([]);
   };
 
-  const onClearOneFilter = (value): void => {
+  const onClearOneFilter = (value: string): void => {
     setFilter((prevState) => prevState.filter((state) => state !== value));
   };
 
@@ -66,60 +66,62 @@ function HomePage (): JSX.Element {
   const topicList = countTopicsAndTotal(threadList);
 
   return (
-    <div className="flex">
-      <div className="grow h-screen p-5 w-max-70">
-        <div className="flex justify-between">
-          <h1 className="font-semibold text-3xl">Beranda</h1>
-          <ButtonLink action="buatThread" />
-        </div>
-        <div className="py-2">
-          {
-            (threads.length > 0)
-              ? (
-                <ThreadList threads={threadFiltered} onVote={onToggleVoteAction} />
-                )
-              : (
-                <SkeletonThreadList />
-                )
-          }
-        </div>
+    <div className="flex flex-col relative h-screen p-2 md:me-4">
+      <div className="p-5 flex justify-between max-[768px]:flex-col max-[768px]:w-full">
+        <h1 className="font-semibold text-3xl text-center md:text-start">Beranda</h1>
+        {(authUser !== null) && <ButtonLink action="buatThread" className="hidden md:block" />}
       </div>
-      <div className="h-screen p-5 w-max-30 grow">
-        <h4 className="font-semibold text-2xl block">Popular Topic</h4>
-        <div className="bg-black-dark p-4 m-3 rounded-lg flex flex-col">
+      <div className="flex flex-col md:flex-row">
+        <div className="grow md:px-5 order-3 md:order-1">
+          <div className="py-2">
+            {
+              (threads.length > 0)
+                ? (
+                  <ThreadList threads={threadFiltered} onVote={onToggleVoteAction} />
+                  )
+                : (
+                  <SkeletonThreadList />
+                  )
+            }
+          </div>
+        </div>
+        <div className="md:h-fit md:p-1 flex flex-col gap-3 order-2 min-w-[30%] md:max-w-min w-full max-[768px]:overflow-x-auto items-center">
+          <h4 className="font-semibold text-2xl hidden md:block">Popular Topic</h4>
+          <div className="md:bg-black-dark md:dark:bg-dark-3-light p-4 rounded-lg flex md:flex-col md:gap-1 gap-2 self-start md:w-5/6 md:m-auto">
+            {
+              (filter.length > 1) && <button type="button" className="sticky md:self-end self-center text-sm" onClick={() => { onClearFilter(); }}>Hapus filter</button>
+            }
+            {
+              (threads?.length !== 0)
+                ? (
+                    topicList.map(({ topic, totalPost }) => (
+                      <div className="w-full flex m-auto md:border-none border md:px-2 px-3 text-nowrap rounded-full gap-1 justify-between" key={topic}>
+                        <button type="button" className="w-full text-left" onClick={() => { addFilter(topic); }}>
+                          <div className="my-2 grow">
+                            <h1 className="text-xs md:text-lg font-medium">
+                              <span>#</span>
+                              {topic}
+                            </h1>
+                            <h1 className="text-sm font-light text-gray-500 hidden md:block">
+                              {totalPost}
+                              <span> posts</span>
+                            </h1>
+                          </div>
+                        </button>
+                        {
+                          filter.includes(topic) && <button type="button" onClick={() => { onClearOneFilter(topic); }}>x</button>
+                        }
+                      </div>
+                    )))
+                : (
+                  <SkeletonThreadCategory />
+                  )
+            }
+          </div>
           {
-            (filter.length > 1) && <button type="button" className="self-end text-sm" onClick={() => { onClearFilter(); }}>Hapus filter</button>
-          }
-          {
-            (threads?.length !== 0)
-              ? (
-                  topicList.map(({ topic, totalPost }) => (
-                    <div className="flex w-5/6 m-auto" key={topic}>
-                      <button type="button" className="w-full text-left" onClick={() => { addFilter(topic); }}>
-                        <div className="my-3 grow">
-                          <h1 className="text-lg font-medium">
-                            <span>#</span>
-                            {topic}
-                          </h1>
-                          <h1 className="text-sm font-light text-gray-500">
-                            {totalPost}
-                            <span> posts</span>
-                          </h1>
-                        </div>
-                      </button>
-                      {
-                        filter.includes(topic) && <button type="button" onClick={() => { onClearOneFilter(topic); }}>x</button>
-                      }
-                    </div>
-                  )))
-              : (
-                <SkeletonThreadCategory />
-                )
+            (authUser === null) && <CruxCard typeCard="authTips" />
           }
         </div>
-        {
-          (authUser === null) && <CruxCard typeCard="authTips" />
-        }
       </div>
     </div>
   );
