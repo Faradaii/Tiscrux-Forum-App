@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import useInput from '../../hooks/UseInput';
 
 interface Props {
-  register: (credentials: { name: string, email: string, password: string }) => void
+  register: (credentials: { name: string, email: string, password: string }) => Promise<void>
 }
 
 function RegisterInput ({ register }: Props): JSX.Element {
@@ -15,8 +15,11 @@ function RegisterInput ({ register }: Props): JSX.Element {
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    register({ name, email, password });
-    void push('/login');
+    register({ name, email, password }).then(() => {
+      void push('/login');
+    }).catch((error) => {
+      alert(error);
+    });
   };
 
   return (

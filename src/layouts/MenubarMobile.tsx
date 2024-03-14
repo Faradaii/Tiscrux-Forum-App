@@ -6,7 +6,7 @@ import { type User } from '../../types';
 export default function MenuBarMobile ({ user = null, setter }:
 { user: User | null, setter: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element {
   return (
-    <nav className="md:hidden z-20 fixed top-3 left-0 right-0 h-[40px] flex justify-between [&>*]:my-auto px-2">
+    <nav className="md:hidden z-20 absolute top-3 left-0 right-0 h-[40px] flex justify-between [&>*]:my-auto px-2">
       <button
         type="button"
         className="text-4xl flex text-white h-full  mx-2"
