@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import LeaderboardList from '../../components/leaderboards/LeaderboardList';
 import { asyncGetLeaderboard } from '../../store/leaderboards/action';
 import CruxCard from '../../components/card/CruxCard';
-import type { RootState } from '../../store/store';
+import type { AppDispatch, RootState } from '../../store/store';
 import SkeletonLeaderboardList from '@/components/skeleton/SkeletonLeaderboardList';
 
 function LeaderboardPage (): JSX.Element {
   const leaderboards = useSelector((state: RootState) => state.leaderboards);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(asyncGetLeaderboard());
+    void dispatch(asyncGetLeaderboard());
   }, [dispatch]);
 
   return (

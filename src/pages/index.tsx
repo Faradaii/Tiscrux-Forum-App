@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { type RootState } from '../store/store';
+import { type AppDispatch, type RootState } from '../store/store';
 import asyncPopulateUsersAndThreads from '../store/shared/action';
 import { asyncToggleVoteThread } from '../store/threads/action';
 import ThreadList from '../components/threads/ThreadList';
@@ -20,17 +20,15 @@ function HomePage (): JSX.Element {
   }));
   const [filter, setFilter] = useState<string[]>([]);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    // const dispatchWithTypes: Dispatch<ReceiveUsersAction | ThreadAction> = dispatch;
-
-    dispatch(asyncPopulateUsersAndThreads());
+    void dispatch(asyncPopulateUsersAndThreads());
   }, [dispatch]);
 
   const onToggleVoteAction = ({ threadId, voteType }: { threadId: string, voteType: 'upVote' | 'downVote' | 'neutralVote' }): void => {
     if (authUser !== null) {
-      dispatch(asyncToggleVoteThread({ threadId, userId: authUser.id, voteType }));
+      void dispatch(asyncToggleVoteThread({ threadId, userId: authUser.id, voteType }));
     } else {
       alert('Silahkan login dulu');
     }

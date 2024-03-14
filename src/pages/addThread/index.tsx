@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import useInput from '../../hooks/UseInput';
 import { asyncAddThread } from '../../store/threads/action';
 import Tiptap from '@/components/editor/Tiptap';
+import type { AppDispatch } from '@/store/store';
 
 function AddPage (): JSX.Element {
   const [title, setTitle] = useInput();
@@ -11,11 +12,11 @@ function AddPage (): JSX.Element {
   const [category, setCategory] = useInput();
 
   const { push } = useRouter();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(asyncAddThread({
+    void dispatch(asyncAddThread({
       title,
       body,
       category

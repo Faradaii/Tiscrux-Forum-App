@@ -2,7 +2,7 @@ import LoadingBar from 'react-redux-loading-bar';
 import { useEffect, useState, type ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { type RootState } from '@/store/store';
+import { type AppDispatch, type RootState } from '@/store/store';
 import Sidebar from '../layouts/Sidebar';
 import { asyncPreloadProcess } from '@/store/isPreload/action';
 import { asyncUnsetAuthUser } from '@/store/authUser/action';
@@ -19,10 +19,10 @@ JSX.Element | null {
     isPreload: state.isPreload
   }));
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(asyncPreloadProcess());
+    void dispatch(asyncPreloadProcess());
   }, [dispatch]);
 
   const onSignOut = (): void => {
@@ -49,7 +49,7 @@ JSX.Element | null {
             />
           </>
         )}
-        <main className="w-full">
+        <main className="w-full sm:text-sm md:text-base text-xs">
           {children}
         </main>
       </div>

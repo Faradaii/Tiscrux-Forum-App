@@ -1,18 +1,26 @@
 import Link from 'next/link';
-import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { asyncRegisterUser } from '@/store/users/action';
 import welcomeIlust from '../../../public/welcomeIlust.svg';
 import RegisterInput from '@/components/inputs/RegisterInput';
+import type { AppDispatch } from '@/store/store';
 
 function RegisterPage (): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
+  const router = useRouter();
 
-  const onRegister = useCallback(({ name, email, password }:
-  { name: string, email: string, password: string }) => {
-    dispatch(asyncRegisterUser({ name, email, password }));
-  }, [dispatch]);
+  const onRegister = async ({ name, email, password }:
+  { name: string, email: string, password: string }):
+  Promise<void> => {
+    try {
+      await dispatch(asyncRegisterUser({ name, email, password }));
+      await router.push('/login');
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
 
   return (
     <div className="h-screen flex justify-center items-center">

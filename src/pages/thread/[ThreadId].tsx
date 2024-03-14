@@ -9,7 +9,7 @@ import {
   asyncToggleVoteComment
 } from '../../store/thread/action';
 import ThreadDetail from '../../components/threads/ThreadDetail';
-import { type RootState } from '@/store/store';
+import { type AppDispatch, type RootState } from '@/store/store';
 import SkeletonThreadDetail from '@/components/skeleton/SkeletonThreadDetail';
 import SkeletonThreadCategory from '@/components/skeleton/SkeletonThreadCategory';
 
@@ -22,13 +22,13 @@ function DetailPage (): JSX.Element {
     authUser: state.authUser
   }));
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { query } = useRouter();
   const threadId = query.ThreadId;
 
   useEffect(() => {
-    if (threadId !== null) {
-      dispatch(asyncReceiveDetailThread(threadId));
+    if (threadId !== undefined && threadId !== null) {
+      void dispatch(asyncReceiveDetailThread(threadId as string));
     }
     return () => {
       dispatch(clearThreadDetailActionCreator());
@@ -37,7 +37,9 @@ function DetailPage (): JSX.Element {
 
   const onToggleVoteAction = ({ voteType }: { voteType: string }): void => {
     if (authUser !== null) {
-      dispatch(asyncToggleVoteThread({ threadId, userId: authUser.id, voteType }));
+      if (typeof threadId === 'string') {
+        void dispatch(asyncToggleVoteThread({ threadId, userId: authUser.id, voteType }));
+      }
     } else {
       alert('Silahkan login dulu');
     }
@@ -46,9 +48,11 @@ function DetailPage (): JSX.Element {
   const onToggleVoteCommentAction = ({ voteType, commentId }:
   { voteType: string, commentId: string }): void => {
     if (authUser !== null) {
-      dispatch(asyncToggleVoteComment({
-        threadId, commentId, userId: authUser.id, voteType
-      }));
+      if (typeof threadId === 'string') {
+        void dispatch(asyncToggleVoteComment({
+          threadId, commentId, userId: authUser.id, voteType
+        }));
+      }
     } else {
       alert('Silahkan login dulu');
     }
@@ -56,13 +60,13 @@ function DetailPage (): JSX.Element {
 
   const addComment = (content: string): void => {
     if (threadId !== null) {
-      dispatch(asyncCreateComment(threadId as string, content));
+      void dispatch(asyncCreateComment(threadId as string, content));
     }
   };
 
   return (
     <div className="flex">
-      <div className="grow h-screen p-5 max-[768px]:max-w-max w-max-70">
+      <div className="grow h-screen p-5 max-[768px]:w-full max-w-70">
         <div>
           <h1 className="font-semibold text-3xl sticky text-center md:text-start">Detail Postingan</h1>
         </div>

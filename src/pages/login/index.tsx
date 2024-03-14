@@ -1,17 +1,21 @@
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import welcomeIlust from '../../../public/welcomeIlust.svg';
 import LoginInput from '@/components/inputs/LoginInput';
 import { asyncSetAuthUser } from '@/store/authUser/action';
+import type { AppDispatch } from '@/store/store';
 
 function Login (): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
+  const router = useRouter();
 
   const onLogin = async ({ email, password }: { email: string, password: string }):
   Promise<void> => {
     try {
-      dispatch(asyncSetAuthUser({ email, password }));
+      await dispatch(asyncSetAuthUser({ email, password }));
+      await router.push('/');
     } catch (error) {
       console.error('Login failed:', error);
     }
