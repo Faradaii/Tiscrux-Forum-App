@@ -2,6 +2,7 @@ import { type Dispatch } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import api from '../../utils/api';
 import { setAuthUserActionCreator, type SetAuthUserAction } from '../authUser/action';
+import type { LoadingBarAction } from '../../../types';
 
 export enum ActionType {
   SET_IS_PRELOAD = 'SET_IS_PRELOAD',
@@ -14,7 +15,7 @@ interface SetIsPreloadAction {
   }
 }
 
-type PreloadAction = SetIsPreloadAction | SetAuthUserAction;
+export type PreloadAction = SetIsPreloadAction | SetAuthUserAction;
 
 export function setIsPreloadActionCreator (isPreload: boolean): SetIsPreloadAction {
   return {
@@ -26,7 +27,7 @@ export function setIsPreloadActionCreator (isPreload: boolean): SetIsPreloadActi
 }
 
 export function asyncPreloadProcess () {
-  return async (dispatch: Dispatch<PreloadAction>) => {
+  return async (dispatch: Dispatch<PreloadAction | LoadingBarAction>) => {
     dispatch(showLoading());
     try {
       const authUser = await api.getOwnProfile();

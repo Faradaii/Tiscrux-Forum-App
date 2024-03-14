@@ -9,9 +9,15 @@ type ThreadsAction =
 function threadsReducer (threads: Threads[] = [], action: ThreadsAction): Threads[] {
   switch (action.type) {
     case ActionType.RECEIVE_THREADS:
-      return action.payload.threads;
+      if ('threads' in action.payload) {
+        return action.payload.threads;
+      }
+      return threads;
     case ActionType.ADD_THREAD:
-      return [action.payload.thread, ...threads];
+      if ('thread' in action.payload) {
+        return [action.payload.thread, ...threads];
+      }
+      return threads;
     case ActionType.UPVOTE_THREAD:
       return threads.map((thread) => {
         if (thread.id === action.payload.threadId) {

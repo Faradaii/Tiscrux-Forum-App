@@ -28,7 +28,7 @@ function asyncRegisterUser
   return async () => {
     try {
       await api.register({ email, name, password });
-    } catch (error) {
+    } catch (error: any) {
       alert(error.message);
     }
   };

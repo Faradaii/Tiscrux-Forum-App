@@ -1,6 +1,6 @@
 import { type Dispatch } from '@reduxjs/toolkit';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
-import type { User } from '../../../types';
+import type { LoadingBarAction, User } from '../../../types';
 import api from '../../utils/api';
 
 enum ActionType {
@@ -41,15 +41,15 @@ function unsetAuthUserActionCreator (): UnsetAuthUserAction {
 }
 
 function asyncSetAuthUser ({ email, password }: { email: string, password: string }) {
-  return async (dispatch: Dispatch<SetAuthUserAction>) => {
+  return async (dispatch: Dispatch<SetAuthUserAction | LoadingBarAction>) => {
     dispatch(showLoading());
     try {
       const token = await api.login({ email, password });
       api.putAccessToken(token);
       const authUser = await api.getOwnProfile();
       dispatch(setAuthUserActionCreator(authUser));
-    } catch (e) {
-      alert(e.message);
+    } catch (error: any) {
+      alert(error.message);
     }
     dispatch(hideLoading());
   };

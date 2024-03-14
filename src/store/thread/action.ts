@@ -1,8 +1,9 @@
 import { type Dispatch } from '@reduxjs/toolkit';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
-import type { Comment, Thread } from '../../../types';
+import type { Comment, LoadingBarAction, Thread } from '../../../types';
 import api from '../../utils/api';
 import { type RootState } from '../store';
+import type { VoteAction } from '../threads/action';
 
 enum ActionType {
   RECEIVE_THREAD_DETAIL = 'RECEIVE_THREAD_DETAIL',
@@ -94,7 +95,8 @@ type ThreadAction =
   | CreateCommentAction
   | UpvoteThreadCommentAction
   | DownvoteThreadCommentAction
-  | NeutralvoteThreadCommentAction;
+  | NeutralvoteThreadCommentAction
+  | VoteAction;
 
 function receiveThreadDetailActionCreator (thread: Thread): ReceiveThreadDetailAction {
   return {
@@ -191,13 +193,13 @@ function neutralvoteThreadCommentActionCreator
 }
 
 function asyncReceiveDetailThread (threadId: string) {
-  return async (dispatch: Dispatch<ThreadAction>) => {
+  return async (dispatch: Dispatch<ThreadAction | LoadingBarAction>) => {
     dispatch(showLoading());
     try {
       dispatch(clearThreadDetailActionCreator());
       const thread = await api.getThreadDetail(threadId);
       dispatch(receiveThreadDetailActionCreator(thread));
-    } catch (error) {
+    } catch (error: any) {
       alert(error.message);
     }
     dispatch(hideLoading());
@@ -206,9 +208,9 @@ function asyncReceiveDetailThread (threadId: string) {
 
 function asyncToggleVoteThread
 ({ threadId, userId, voteType }: { threadId: string, userId: string, voteType: string }) {
-  return async (dispatch: Dispatch<ThreadAction>, getState: RootState) => {
+  return async (dispatch: Dispatch<ThreadAction>, getState: () => RootState) => {
     const store = getState();
-    const { upVotesBy, downVotesBy } = store.thread;
+    const { upVotesBy, downVotesBy } = store.thread ?? {};
 
     switch (voteType) {
       case 'upVote':
@@ -217,7 +219,7 @@ function asyncToggleVoteThread
         try {
           await api.upvoteThread(threadId);
         } catch (error) {
-          if (downVotesBy.includes(userId)) {
+          if (downVotesBy && downVotesBy.includes(userId)) {
             dispatch(downvoteThreadActionCreator(threadId, userId));
           } else {
             dispatch(neutralvoteThreadActionCreator(threadId, userId));
@@ -230,7 +232,7 @@ function asyncToggleVoteThread
         try {
           await api.downvoteThread(threadId);
         } catch (error) {
-          if (upVotesBy.includes(userId)) {
+          if (upVotesBy && upVotesBy.includes(userId)) {
             dispatch(upvoteThreadActionCreator(threadId, userId));
           } else {
             dispatch(neutralvoteThreadActionCreator(threadId, userId));
@@ -242,10 +244,10 @@ function asyncToggleVoteThread
         try {
           await api.neutralvoteThread(threadId);
         } catch (error) {
-          if (upVotesBy.includes(userId)) {
+          if (upVotesBy && upVotesBy.includes(userId)) {
             dispatch(upvoteThreadActionCreator(threadId, userId));
           }
-          if (downVotesBy.includes(userId)) {
+          if (downVotesBy && downVotesBy.includes(userId)) {
             dispatch(downvoteThreadActionCreator(threadId, userId));
           }
         }
@@ -258,7 +260,7 @@ function asyncCreateComment (threadId: string, content: string) {
     try {
       const comment = await api.createComment({ threadId, content });
       dispatch(createCommentActionCreator(comment));
-    } catch (error) {
+    } catch (error: any) {
       alert(error.message);
     }
   };
@@ -267,10 +269,11 @@ function asyncCreateComment (threadId: string, content: string) {
 function asyncToggleVoteComment
 ({ threadId, commentId, userId, voteType }:
 { threadId: string, commentId: string, userId: string, voteType: string }) {
-  return async (dispatch: Dispatch<ThreadAction>, getState: RootState) => {
+  return async (dispatch: Dispatch<ThreadAction>, getState: () => RootState) => {
     const store = getState();
-    const { upVotesBy, downVotesBy } = store.thread.comments
-      .find((comment: Comment) => comment.id === commentId);
+    const comment = store.thread?.comments.find((c: Comment) => c.id === commentId);
+    const upVotesBy: string[] = comment?.upVotesBy ?? [];
+    const downVotesBy: string[] = comment?.downVotesBy ?? [];
 
     switch (voteType) {
       case 'upVote':

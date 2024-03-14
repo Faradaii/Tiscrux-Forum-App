@@ -1,7 +1,7 @@
 import { type Dispatch } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import api from '../../utils/api';
-import type { Thread, Threads } from '../../../types';
+import type { LoadingBarAction, ThreadBase, Threads } from '../../../types';
 import { type RootState } from '../store';
 
 enum ActionType {
@@ -83,12 +83,12 @@ function neutralvoteThreadActionCreator (threadId: string, userId: string): Vote
 }
 
 function asyncAddThread ({ title = '', body = '', category = '' }: { title?: string, body?: string, category?: string }) {
-  return async (dispatch: Dispatch<ThreadAddAction>) => {
+  return async (dispatch: Dispatch<ThreadAddAction | LoadingBarAction>) => {
     dispatch(showLoading());
     try {
       const thread = await api.createThread({ title, body, category });
       dispatch(addThreadActionCreator(thread));
-    } catch (error) {
+    } catch (error: any) {
       alert(error.message);
     }
     dispatch(hideLoading());
@@ -97,10 +97,11 @@ function asyncAddThread ({ title = '', body = '', category = '' }: { title?: str
 
 function asyncToggleVoteThread
 ({ threadId, userId, voteType }: { threadId: string, userId: string, voteType: string }) {
-  return async (dispatch: Dispatch<VoteAction>, getState: RootState) => {
+  return async (dispatch: Dispatch<VoteAction>, getState: () => RootState) => {
     const store = getState();
-    const { upVotesBy, downVotesBy } = store.threads
-      .find((thread: Thread) => thread.id === threadId);
+    const thread = store.threads?.find((thread: ThreadBase) => thread.id === threadId);
+    const upVotesBy: string[] = thread?.upVotesBy ?? [];
+    const downVotesBy: string[] = thread?.downVotesBy ?? [];
 
     switch (voteType) {
       case 'upVote':
@@ -108,7 +109,7 @@ function asyncToggleVoteThread
 
         try {
           await api.upvoteThread(threadId);
-        } catch (error) {
+        } catch (e) {
           if (downVotesBy.includes(userId)) {
             dispatch(downvoteThreadActionCreator(threadId, userId));
           } else {
@@ -121,7 +122,7 @@ function asyncToggleVoteThread
 
         try {
           await api.downvoteThread(threadId);
-        } catch (error) {
+        } catch (e) {
           if (upVotesBy.includes(userId)) {
             dispatch(upvoteThreadActionCreator(threadId, userId));
           } else {
@@ -133,7 +134,7 @@ function asyncToggleVoteThread
         dispatch(neutralvoteThreadActionCreator(threadId, userId));
         try {
           await api.neutralvoteThread(threadId);
-        } catch (error) {
+        } catch (e) {
           if (upVotesBy.includes(userId)) {
             dispatch(upvoteThreadActionCreator(threadId, userId));
           }
