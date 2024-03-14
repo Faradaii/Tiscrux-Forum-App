@@ -23,7 +23,7 @@ function CruxCard ({ typeCard }: CruxCardProps): JSX.Element {
   };
 
   return (
-    <div className="flex flex-col text-center gap-3 w-5/6 m-auto p-10 rounded-md bg-dark-3-light text-white">
+    <div className="hidden md:flex flex-col text-center gap-3 w-5/6 m-auto p-10 rounded-md bg-dark-3-light text-white">
       <h1 className="text-xl font-bold">CRUX!</h1>
       <p className="text-justify text-sm">
         {typeCardList[typeCard].content}
