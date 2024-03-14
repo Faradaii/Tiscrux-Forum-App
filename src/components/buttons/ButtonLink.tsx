@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 interface ButtonLinkProps {
-  action: 'Login' | 'Register' | 'Beranda' | 'buatThread' | 'Leaderboard' | 'Pengaturan'
+  action: 'Login' | 'Register' | 'Beranda' | 'buatThread' | 'Leaderboard'
   optionalText?: string
   className?: string
 }
