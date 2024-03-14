@@ -11,7 +11,7 @@ export interface Token {
   password: string
 }
 
-interface ThreadBase {
+export interface ThreadBase {
   id: string
   title: string
   body: string
@@ -32,7 +32,7 @@ export interface Comment {
   createdAt: string
   upVotesBy: string[]
   downVotesBy: string[]
-  owner: Omit<User, 'email'>
+  owner: User
 }
 
 export interface Thread extends ThreadBase {
@@ -67,4 +67,14 @@ interface Response {
 
 export interface VoteResponse extends Response {
   data: VoteComment | VoteThread
+}
+
+export interface ThemeType {
+  theme: string
+  toggleTheme: () => void
+}
+
+export interface LoadingBarAction {
+  type: string
+  payload?: any
 }
