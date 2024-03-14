@@ -9,6 +9,7 @@
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 0px;
 }
 
 ::-webkit-scrollbar-track {
@@ -24,6 +25,14 @@
 [contenteditable=true]:empty:before {
   content: attr(placeholder);
   pointer-events: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
 }
 
 .text-2xs{
