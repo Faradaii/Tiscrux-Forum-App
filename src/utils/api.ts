@@ -1,4 +1,4 @@
-import type { LeaderboardData, ThreadDetail, Threads, User, VoteResponse } from '../../types';
+import type { LeaderboardData, Thread, Threads, User, VoteResponse, Comment } from '../../types';
 
 const api = (() => {
   const BASE_URL: string = 'https://forum-api.dicoding.dev/v1';
@@ -116,7 +116,7 @@ const api = (() => {
     return threads;
   }
 
-  async function getThreadDetail (id: string): Promise<ThreadDetail> {
+  async function getThreadDetail (id: string): Promise<Thread> {
     const response = await fetch(`${BASE_URL}/threads/${id}`);
 
     const responseJson = await response.json();
@@ -277,7 +277,6 @@ const api = (() => {
     const responseJson = await response.json();
 
     const { status, message }: { status: string, message: string | undefined } = responseJson;
-    console.log(threadId);
 
     if (status !== 'success') {
       throw new Error(message);
