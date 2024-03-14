@@ -1,9 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { loadingBarMiddleware } from 'react-redux-loading-bar';
 import { useDispatch } from 'react-redux';
 import { rootReducer } from './rootReducer';
 
 const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  })
+    .concat(loadingBarMiddleware())
 });
 
 export type RootState = ReturnType<typeof store.getState>;
