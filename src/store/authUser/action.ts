@@ -1,4 +1,5 @@
 import { type Dispatch } from '@reduxjs/toolkit';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import type { User } from '../../../types';
 import api from '../../utils/api';
 
@@ -41,6 +42,7 @@ function unsetAuthUserActionCreator (): UnsetAuthUserAction {
 
 function asyncSetAuthUser ({ email, password }: { email: string, password: string }) {
   return async (dispatch: Dispatch<SetAuthUserAction>) => {
+    dispatch(showLoading());
     try {
       const token = await api.login({ email, password });
       api.putAccessToken(token);
@@ -49,6 +51,7 @@ function asyncSetAuthUser ({ email, password }: { email: string, password: strin
     } catch (e) {
       alert(e.message);
     }
+    dispatch(hideLoading());
   };
 }
 

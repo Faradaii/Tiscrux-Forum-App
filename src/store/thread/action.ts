@@ -1,4 +1,5 @@
 import { type Dispatch } from '@reduxjs/toolkit';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import type { Comment, Thread } from '../../../types';
 import api from '../../utils/api';
 import { type RootState } from '../store';
@@ -191,6 +192,7 @@ function neutralvoteThreadCommentActionCreator
 
 function asyncReceiveDetailThread (threadId: string) {
   return async (dispatch: Dispatch<ThreadAction>) => {
+    dispatch(showLoading());
     try {
       dispatch(clearThreadDetailActionCreator());
       const thread = await api.getThreadDetail(threadId);
@@ -198,6 +200,7 @@ function asyncReceiveDetailThread (threadId: string) {
     } catch (error) {
       alert(error.message);
     }
+    dispatch(hideLoading());
   };
 }
 

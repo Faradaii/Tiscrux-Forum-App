@@ -1,7 +1,8 @@
 import { type Dispatch } from '@reduxjs/toolkit';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import api from '../../utils/api';
 import type { Thread, Threads } from '../../../types';
-import { RootState } from '../store';
+import { type RootState } from '../store';
 
 enum ActionType {
   RECEIVE_THREADS = 'RECEIVE_THREADS',
@@ -83,12 +84,14 @@ function neutralvoteThreadActionCreator (threadId: string, userId: string): Vote
 
 function asyncAddThread ({ title = '', body = '', category = '' }: { title?: string, body?: string, category?: string }) {
   return async (dispatch: Dispatch<ThreadAddAction>) => {
+    dispatch(showLoading());
     try {
       const thread = await api.createThread({ title, body, category });
       dispatch(addThreadActionCreator(thread));
     } catch (error) {
       alert(error.message);
     }
+    dispatch(hideLoading());
   };
 }
 

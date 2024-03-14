@@ -1,4 +1,5 @@
 import { type Dispatch } from '@reduxjs/toolkit';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import api from '../../utils/api';
 import { type LeaderboardData } from '../../../types';
 
@@ -37,12 +38,14 @@ function clearLeaderboardActionCreator (): ClearLeaderboardAction {
 
 function asyncGetLeaderboard () {
   return async (dispatch: Dispatch<LeaderboardAction>) => {
+    dispatch(showLoading());
     try {
       const leaderboards = await api.getLeaderboards();
       dispatch(getLeaderboardActionCreator(leaderboards));
     } catch (error) {
       alert(error.message);
     }
+    dispatch(hideLoading());
   };
 }
 

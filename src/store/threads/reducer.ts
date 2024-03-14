@@ -44,7 +44,7 @@ function threadsReducer (threads: Threads[] = [], action: ThreadsAction): Thread
           return {
             ...thread,
             upVotesBy: thread.upVotesBy.filter((id) => id !== action.payload.userId),
-            downVotesBy: thread.upVotesBy.filter((id) => id !== action.payload.userId)
+            downVotesBy: thread.downVotesBy.filter((id) => id !== action.payload.userId)
           };
         }
         return thread;
