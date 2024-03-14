@@ -16,8 +16,8 @@ function LeaderboardPage (): JSX.Element {
 
   return (
     <div className="flex">
-      <div className="grow h-screen p-5 w-max-70">
-        <h1 className="font-semibold text-3xl sticky">Leaderboard</h1>
+      <div className="grow h-screen p-5 max-[768px]:w-full">
+        <h1 className="font-semibold text-3xl sticky text-center md:text-start">Leaderboard</h1>
         <div className="py-5">
           {
             ((leaderboards?.length !== 0))
@@ -26,7 +26,7 @@ function LeaderboardPage (): JSX.Element {
           }
         </div>
       </div>
-      <div className="h-screen p-5 w-max-30">
+      <div className="hidden md:block h-screen p-5 w-max-30">
         <CruxCard typeCard="leaderboardTips" />
       </div>
     </div>

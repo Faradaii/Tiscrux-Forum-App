@@ -1,11 +1,12 @@
 import LoadingBar from 'react-redux-loading-bar';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { type RootState } from '@/store/store';
 import Sidebar from '../layouts/Sidebar';
 import { asyncPreloadProcess } from '@/store/isPreload/action';
 import { asyncUnsetAuthUser } from '@/store/authUser/action';
+import MenuBarMobile from '@/layouts/MenubarMobile';
 
 const disableNavbar = ['/login', '/register', '/404'];
 
@@ -28,17 +29,30 @@ JSX.Element | null {
     dispatch(asyncUnsetAuthUser());
   };
 
+  const [showSidebar, setShowSidebar] = useState(false);
+
   if (isPreload) {
     return null;
   }
   return (
-    <div className="h-screen overflow-auto flex items-center gap-2 bg-white-light dark:bg-white-dark text-black-light dark:text-black-dark">
-      <LoadingBar />
-      {!disableNavbar.includes(pathname) && <Sidebar user={authUser} onSignOut={onSignOut} />}
-      <main className="w-full">
-        <LoadingBar scope="sectionBar" />
-        {children}
-      </main>
-    </div>
+    <>
+      <LoadingBar updateTime={300} maxProgress={80} progressIncrease={20} className="absolute z-50 bg-primary h-1" />
+      <div className="h-screen overflow-auto flex items-center gap-2 bg-white-light dark:bg-white-dark text-black-light dark:text-black-dark">
+        {!disableNavbar.includes(pathname) && (
+          <>
+            <MenuBarMobile user={authUser} setter={setShowSidebar} />
+            <Sidebar
+              user={authUser}
+              onSignOut={onSignOut}
+              show={showSidebar}
+              setter={setShowSidebar}
+            />
+          </>
+        )}
+        <main className="w-full">
+          {children}
+        </main>
+      </div>
+    </>
   );
 }
