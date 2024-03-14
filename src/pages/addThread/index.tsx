@@ -7,7 +7,7 @@ import Tiptap from '@/components/editor/Tiptap';
 
 function AddPage (): JSX.Element {
   const [title, setTitle] = useInput();
-  const [body, setBody, changeBody] = useInput(1);
+  const [body,, changeBody] = useInput(1);
   const [category, setCategory] = useInput();
 
   const { push } = useRouter();
@@ -20,10 +20,10 @@ function AddPage (): JSX.Element {
       body,
       category
     }));
-    push('/');
+    void push('/');
   };
 
-  const changeBodyHandler = (value) => {
+  const changeBodyHandler = (value: React.SetStateAction<string>): void => {
     changeBody(value);
   };
 
@@ -31,9 +31,9 @@ function AddPage (): JSX.Element {
     <div className="w-full">
       <div className="h-screen p-5">
         <div>
-          <h1 className="font-semibold text-3xl sticky">Buat Thread</h1>
+          <h1 className="font-semibold text-3xl sticky text-center md:text-start">Buat Thread</h1>
         </div>
-        <form onSubmit={onSubmitHandler} className="my-5 flex flex-col gap-4 h-full w-4/6 font-poppins bg-white-light dark:bg-white-dark">
+        <form onSubmit={onSubmitHandler} className="my-5 flex flex-col gap-4 h-full md:w-4/6 font-poppins bg-white-light dark:bg-white-dark">
           <div className="p-8 grow border flex flex-col gap-4 rounded-lg">
             <div className="text-start">
               <input type="text" value={title} required onChange={setTitle} className="w-full text-2xl placeholder-gray-700 bg-transparent outline-none" placeholder="Judul Thread" />
