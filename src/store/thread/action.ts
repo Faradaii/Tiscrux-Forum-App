@@ -1,6 +1,6 @@
 import { type Dispatch } from '@reduxjs/toolkit';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
-import type { Comment, LoadingBarAction, Thread } from '../../../types';
+import type { LoadingBarAction, Thread, ThreadComment, UnknownAction } from '../../../types';
 import api from '../../utils/api';
 import { type RootState } from '../store';
 import type { VoteAction } from '../threads/action';
@@ -55,7 +55,7 @@ interface NeutralvoteThreadAction {
 interface CreateCommentAction {
   type: ActionType.CREATE_COMMENT
   payload: {
-    comment: Comment
+    comment: ThreadComment
   }
 }
 
@@ -96,7 +96,8 @@ type ThreadAction =
   | UpvoteThreadCommentAction
   | DownvoteThreadCommentAction
   | NeutralvoteThreadCommentAction
-  | VoteAction;
+  | VoteAction
+  | UnknownAction;
 
 function receiveThreadDetailActionCreator (thread: Thread): ReceiveThreadDetailAction {
   return {
@@ -147,7 +148,7 @@ function neutralvoteThreadActionCreator
 }
 
 function createCommentActionCreator
-(comment: Comment): CreateCommentAction {
+(comment: ThreadComment): CreateCommentAction {
   return {
     type: ActionType.CREATE_COMMENT,
     payload: {
@@ -271,7 +272,7 @@ function asyncToggleVoteComment
 { threadId: string, commentId: string, userId: string, voteType: string }) {
   return async (dispatch: Dispatch<ThreadAction>, getState: () => RootState) => {
     const store = getState();
-    const comment = store.thread?.comments.find((c: Comment) => c.id === commentId);
+    const comment = store.thread?.comments.find((c: ThreadComment) => c.id === commentId);
     const upVotesBy: string[] = comment?.upVotesBy ?? [];
     const downVotesBy: string[] = comment?.downVotesBy ?? [];
 

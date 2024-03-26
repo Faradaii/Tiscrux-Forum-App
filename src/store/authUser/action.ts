@@ -17,9 +17,6 @@ interface SetAuthUserAction {
 
 interface UnsetAuthUserAction {
   type: ActionType.UNSET_AUTH_USER
-  payload: {
-    authUser: null
-  }
 }
 
 function setAuthUserActionCreator (authUser: User): SetAuthUserAction {
@@ -33,10 +30,7 @@ function setAuthUserActionCreator (authUser: User): SetAuthUserAction {
 
 function unsetAuthUserActionCreator (): UnsetAuthUserAction {
   return {
-    type: ActionType.UNSET_AUTH_USER,
-    payload: {
-      authUser: null
-    }
+    type: ActionType.UNSET_AUTH_USER
   };
 }
 
