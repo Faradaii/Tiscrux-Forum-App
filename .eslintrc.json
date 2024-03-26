@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "cypress/globals": true
     },
     "extends": [
         "airbnb",
@@ -16,7 +17,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react", 
+        "cypress"
     ],
     "rules": {
       "no-console": "off",
@@ -47,6 +49,7 @@
       "no-return-await": "off",
       "default-param-last": 0,
       "no-param-reassign": 0,
-      "no-case-declarations": 0
+      "no-case-declarations": 0,
+      "@typescript-eslint/no-unsafe-argument": 0
     }
 }
