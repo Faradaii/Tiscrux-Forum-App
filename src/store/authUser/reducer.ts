@@ -1,11 +1,13 @@
 import { ActionType, type SetAuthUserAction, type UnsetAuthUserAction } from './action';
-import type { User } from '../../../types';
+import type { UnknownAction, User } from '../../../types';
 
 type AuthUserState = User | null;
 
-const authUserReducer =
-(authUser: AuthUserState = null, action: SetAuthUserAction | UnsetAuthUserAction):
-AuthUserState => {
+type action = SetAuthUserAction | UnsetAuthUserAction | UnknownAction;
+
+function authUserReducer
+(authUser: AuthUserState = null, action: action):
+AuthUserState {
   switch (action.type) {
     case ActionType.SET_AUTH_USER:
       return action.payload.authUser;
@@ -14,6 +16,6 @@ AuthUserState => {
     default:
       return authUser;
   }
-};
+}
 
 export default authUserReducer;

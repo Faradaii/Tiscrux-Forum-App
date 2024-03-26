@@ -1,7 +1,9 @@
 import { ActionType, type UserAction } from './action';
-import type { User } from '../../../types';
+import type { UnknownAction, User } from '../../../types';
 
-function usersReducer (users: User[] = [], action: UserAction): User[] {
+type action = UserAction | UnknownAction;
+
+function usersReducer (users: User[] = [], action: action): User[] {
   switch (action.type) {
     case ActionType.RECEIVE_USERS:
       return action.payload.users;

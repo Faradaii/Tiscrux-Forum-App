@@ -1,4 +1,4 @@
-import { type LeaderboardData } from '../../../types';
+import { type UnknownAction, type LeaderboardData } from '../../../types';
 import { ActionType } from './action';
 
 interface GetLeaderboardAction {
@@ -12,15 +12,15 @@ interface ClearLeaderboardAction {
   type: ActionType.CLEAR_LEADERBOARD
 }
 
-type LeaderboardAction = GetLeaderboardAction | ClearLeaderboardAction;
+type Action = GetLeaderboardAction | ClearLeaderboardAction | UnknownAction;
 
 function leaderboardsReducer
-(leaderboards: LeaderboardData[] | null = [], action: LeaderboardAction): LeaderboardData[] | null {
+(leaderboards: LeaderboardData[] = [], action: Action): LeaderboardData[] | null {
   switch (action.type) {
     case ActionType.GET_LEADERBOARD:
       return action.payload.leaderboards;
     case ActionType.CLEAR_LEADERBOARD:
-      return null;
+      return [];
     default:
       return leaderboards;
   }

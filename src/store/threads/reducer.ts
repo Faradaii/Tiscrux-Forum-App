@@ -1,12 +1,13 @@
 import { ActionType, type ThreadAction, type ThreadAddAction, type VoteAction } from './action';
-import { type Threads } from '../../../types';
+import { type UnknownAction, type Threads } from '../../../types';
 
-type ThreadsAction =
+type Action =
   | ThreadAction
   | ThreadAddAction
-  | VoteAction;
+  | VoteAction
+  | UnknownAction;
 
-function threadsReducer (threads: Threads[] = [], action: ThreadsAction): Threads[] {
+function threadsReducer (threads: Threads[] = [], action: Action): Threads[] {
   switch (action.type) {
     case ActionType.RECEIVE_THREADS:
       if ('threads' in action.payload) {
