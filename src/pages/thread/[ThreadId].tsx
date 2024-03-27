@@ -24,11 +24,11 @@ function DetailPage (): JSX.Element {
 
   const dispatch: AppDispatch = useDispatch();
   const { query } = useRouter();
-  const threadId = query.ThreadId;
+  const threadId: string = query.ThreadId ? query.ThreadId as string : '';
 
   useEffect(() => {
     if (threadId !== undefined && threadId !== null) {
-      void dispatch(asyncReceiveDetailThread(threadId as string));
+      void dispatch(asyncReceiveDetailThread(threadId));
     }
     return () => {
       dispatch(clearThreadDetailActionCreator());
@@ -60,7 +60,7 @@ function DetailPage (): JSX.Element {
 
   const addComment = (content: string): void => {
     if (threadId !== null) {
-      void dispatch(asyncCreateComment(threadId as string, content));
+      void dispatch(asyncCreateComment({ threadId, content }));
     }
   };
 
