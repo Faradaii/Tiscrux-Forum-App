@@ -1,9 +1,9 @@
-import React, { type FormEvent } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import useInput from '../../hooks/UseInput';
 
 interface Props {
-  register: (credentials: { name: string, email: string, password: string }) => Promise<void>
+  register: ({ name, email, password }:
+  { name: string, email: string, password: string }) => void
 }
 
 function RegisterInput ({ register }: Props): JSX.Element {
@@ -11,15 +11,14 @@ function RegisterInput ({ register }: Props): JSX.Element {
   const [email, setEmail] = useInput();
   const [password, setPassword] = useInput();
 
-  const { push } = useRouter();
-
-  const onSubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    register({ name, email, password }).then(() => {
-      void push('/login');
-    }).catch((error) => {
-      alert(error);
-    });
+    const registerData = {
+      name,
+      email,
+      password
+    };
+    register(registerData);
   };
 
   return (
@@ -29,6 +28,7 @@ function RegisterInput ({ register }: Props): JSX.Element {
         <input
           type="text"
           value={name}
+          placeholder="name"
           required
           onChange={setName}
           className="w-full px-3 py-1 rounded-lg border-gray-200 border bg-white-light dark:bg-white-dark"
@@ -39,6 +39,7 @@ function RegisterInput ({ register }: Props): JSX.Element {
         <input
           type="email"
           autoComplete="username"
+          placeholder="email"
           value={email}
           required
           onChange={setEmail}
@@ -49,6 +50,7 @@ function RegisterInput ({ register }: Props): JSX.Element {
         <label className="block mb-2">Password</label>
         <input
           type="password"
+          placeholder="password"
           autoComplete="new-password"
           value={password}
           required

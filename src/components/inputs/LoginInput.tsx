@@ -1,24 +1,23 @@
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
+import useInput from '@/hooks/UseInput';
 
 interface Props {
-  login: (credentials: { email: string, password: string }) => Promise<void>
+  login: ({ email, password }: { email: string, password: string }) => void
 }
 
 function LoginInput ({ login }: Props): JSX.Element {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useInput();
+  const [password, setPassword] = useInput();
   const [isHide, setIsHide] = useState<boolean>(true);
-  const { push } = useRouter();
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    login({ email, password }).then(() => {
-      void push('/');
-    }).catch((error) => {
-      alert(error);
-    });
+    const loginData = {
+      email,
+      password
+    };
+    login(loginData);
   };
 
   return (
@@ -27,10 +26,12 @@ function LoginInput ({ login }: Props): JSX.Element {
         <label className="block mb-2">Email</label>
         <input
           type="email"
+          id="email"
+          placeholder="email"
           autoComplete="username"
           value={email}
           required
-          onChange={(e) => { setEmail(e.target.value); }}
+          onChange={setEmail}
           className="w-full px-3 py-1 rounded-lg border-gray-200 border bg-white-light dark:bg-white-dark"
         />
       </div>
@@ -39,11 +40,12 @@ function LoginInput ({ login }: Props): JSX.Element {
         <div className="relative">
           <input
             id="password"
+            placeholder="password"
             type={isHide ? 'password' : 'text'}
             autoComplete="current-password"
             value={password}
             required
-            onChange={(e) => { setPassword(e.target.value); }}
+            onChange={setPassword}
             className="w-full px-3 py-1 rounded-lg border-gray-200 border bg-white-light dark:bg-white-dark"
           />
           <button
@@ -55,7 +57,7 @@ function LoginInput ({ login }: Props): JSX.Element {
           </button>
         </div>
       </div>
-      <button type="submit" className="bg-primary rounded-lg py-1 text-lg my-2 text-white">
+      <button type="submit" className="bg-primary rounded-lg py-1 text-lg my-2 text-white" name="submit">
         Masuk
       </button>
     </form>
