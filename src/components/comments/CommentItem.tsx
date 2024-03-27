@@ -4,10 +4,10 @@ import {
   MdOutlineThumbDown, MdThumbDown, MdOutlineThumbUp, MdThumbUp
 } from 'react-icons/md';
 import { convertDateFormat } from '../../utils';
-import type { Comment, User } from '../../../types';
+import type { ThreadComment, User } from '../../../types';
 
 interface Props {
-  comment: Comment
+  comment: ThreadComment
   authUser: User | null
   onVoteComment: (voteData: { commentId: string, voteType: string }) => void
 }

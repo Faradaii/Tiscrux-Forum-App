@@ -4,7 +4,7 @@ import { IoArrowUpCircle, IoArrowUpCircleOutline, IoArrowDownCircle, IoArrowDown
 import { convertDateFormat, captureImgSrc } from '../../utils';
 import CommentInput from '../comments/CommentInput';
 import CommentItem from '../comments/CommentItem';
-import type { User, Comment, Thread } from '../../../types';
+import type { User, Thread, ThreadComment } from '../../../types';
 
 interface Props {
   thread: Thread
@@ -76,7 +76,7 @@ function ThreadDetail ({
       </div>
       <div className="border-t-2 py-5 flex flex-col gap-3">
         {
-          Array.isArray(comments) && comments.reverse().map((comment: Comment) => (
+          Array.isArray(comments) && comments.reverse().map((comment: ThreadComment) => (
             <CommentItem
               key={comment.id}
               comment={comment}
