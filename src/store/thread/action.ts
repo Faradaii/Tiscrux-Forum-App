@@ -1,6 +1,6 @@
 import { type Dispatch } from '@reduxjs/toolkit';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
-import type { LoadingBarAction, Thread, ThreadComment, UnknownAction } from '../../../types';
+import type { LoadingBarAction, Thread, ThreadComment, ThreadDetailComment, UnknownAction } from '../../../types';
 import api from '../../utils/api';
 import { type RootState } from '../store';
 import type { VoteAction } from '../threads/action';
@@ -55,7 +55,7 @@ interface NeutralvoteThreadAction {
 interface CreateCommentAction {
   type: ActionType.CREATE_COMMENT
   payload: {
-    comment: ThreadComment
+    comment: ThreadDetailComment
   }
 }
 
@@ -148,7 +148,7 @@ function neutralvoteThreadActionCreator
 }
 
 function createCommentActionCreator
-(comment: ThreadComment): CreateCommentAction {
+(comment: ThreadDetailComment): CreateCommentAction {
   return {
     type: ActionType.CREATE_COMMENT,
     payload: {
@@ -256,14 +256,16 @@ function asyncToggleVoteThread
     }
   };
 }
-function asyncCreateComment (threadId: string, content: string) {
+function asyncCreateComment ({ threadId, content }: { threadId: string, content: string }) {
   return async (dispatch: Dispatch<ThreadAction>) => {
+    dispatch(showLoading());
     try {
       const comment = await api.createComment({ threadId, content });
       dispatch(createCommentActionCreator(comment));
     } catch (error: any) {
       alert(error.message);
     }
+    dispatch(hideLoading());
   };
 }
 
