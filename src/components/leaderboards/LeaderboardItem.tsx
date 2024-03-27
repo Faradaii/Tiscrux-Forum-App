@@ -14,12 +14,12 @@ function LeaderboardItem ({
       <div className="flex w-full">
         <h1 className="font-bold text-5xl w-2/12 text-center">{index}</h1>
         <div className="flex gap-3 px-2">
-          <img src={user.avatar} alt={user.id} className="rounded-full" />
+          <img src={user?.avatar} alt={user?.id} className="rounded-full" />
           <div>
-            <h2 className="text-xl font-semibold">{user.name}</h2>
+            <h2 className="text-xl font-semibold">{user?.name}</h2>
             <h2>
               @
-              {user.id}
+              {user?.id}
             </h2>
           </div>
         </div>
