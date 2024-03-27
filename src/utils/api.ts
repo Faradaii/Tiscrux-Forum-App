@@ -1,4 +1,4 @@
-import type { LeaderboardData, Thread, Threads, User, VoteResponse, Comment } from '../../types';
+import type { LeaderboardData, Thread, Threads, User, VoteResponse, ThreadDetailComment } from '../../types';
 
 const api = (() => {
   const BASE_URL: string = 'https://forum-api.dicoding.dev/v1';
@@ -159,7 +159,7 @@ const api = (() => {
     return thread;
   }
 
-  async function createComment ({ threadId, content = '' }: { threadId: string, content: string }): Promise<Comment> {
+  async function createComment ({ threadId, content = '' }: { threadId: string, content: string }): Promise<ThreadDetailComment> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments`, {
       method: 'POST',
       headers: {

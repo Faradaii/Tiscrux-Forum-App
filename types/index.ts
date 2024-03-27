@@ -35,14 +35,22 @@ export interface Comment {
   owner: User
 }
 
-export interface Thread extends ThreadBase {
+export interface ThreadComment extends Omit<Comment, 'owner'> {
   owner: Omit<User, 'email'>
-  comments: Comment[]
+}
+
+export interface ThreadDetailComment extends Omit<Comment, 'owner'> {
+  owner: Omit<User, 'avatar'>
+}
+
+export interface Thread extends Omit<ThreadBase, 'ownerId'> {
+  owner: Omit<User, 'email'>
+  comments: ThreadComment[]
 }
 
 export interface LeaderboardData {
-  user: User
-  score: number
+  user?: User
+  score?: number
 }
 
 export interface Vote {
@@ -74,7 +82,10 @@ export interface ThemeType {
   toggleTheme: () => void
 }
 
-export interface LoadingBarAction {
+export interface LoadingBarAction extends UnknownAction {
+}
+
+export interface UnknownAction {
   type: string
   payload?: any
 }

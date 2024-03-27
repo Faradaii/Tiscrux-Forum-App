@@ -1,4 +1,6 @@
-import type { User } from '../../../types';
+import type { Dispatch } from '@reduxjs/toolkit';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import type { LoadingBarAction, User } from '../../../types';
 import api from '../../utils/api';
 
 enum ActionType {
@@ -25,12 +27,14 @@ function receiveUsersActionCreator (users: User[]): ReceiveUsersAction {
 
 function asyncRegisterUser
 ({ email, name, password }: { email: string, name: string, password: string }) {
-  return async () => {
+  return async (dispatch: Dispatch<UserAction | LoadingBarAction>) => {
+    dispatch(showLoading());
     try {
       await api.register({ email, name, password });
     } catch (error: any) {
       alert(error.message);
     }
+    dispatch(hideLoading());
   };
 }
 
