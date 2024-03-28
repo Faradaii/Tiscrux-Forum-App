@@ -6,7 +6,7 @@
  *   - should handle password typing correctly
  *   - should call login function when submit button is clicked
  */
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import userEvent from '@testing-library/user-event';
 import LoginInput from './LoginInput';
@@ -47,13 +47,15 @@ describe('LoginInputComponent', () => {
     const loginMock = jest.fn();
     render(<LoginInput login={loginMock} />);
     const emailInput = screen.getByPlaceholderText('email');
-    await userEvent.type(emailInput, 'usernameTest');
     const passwordInput = screen.getByPlaceholderText('password');
-    await userEvent.type(passwordInput, 'passwordTest');
-    const loginButton = screen.getByText('Masuk');
+    const submitButton = screen.getByText('Masuk');
 
     // action
-    await userEvent.click(loginButton);
+    await userEvent.type(emailInput, 'usernameTest');
+    await userEvent.type(passwordInput, 'passwordTest');
+    await waitFor(() => {
+      fireEvent.submit(submitButton);
+    });
 
     // assert
     expect(loginMock).toHaveBeenCalledWith({ email: 'usernameTest', password: 'passwordTest' });

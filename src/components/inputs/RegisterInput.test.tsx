@@ -7,7 +7,7 @@
  *   - should handle name typing correctly
  *   - should call register function when submit button is clicked
  */
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import userEvent from '@testing-library/user-event';
 import RegisterInput from './RegisterInput';
@@ -60,15 +60,17 @@ describe('RegisterInputComponent', () => {
     const registerMock = jest.fn();
     render(<RegisterInput register={registerMock} />);
     const emailInput = screen.getByPlaceholderText('email');
-    await userEvent.type(emailInput, 'usernameTest');
     const passwordInput = screen.getByPlaceholderText('password');
-    await userEvent.type(passwordInput, 'passwordTest');
     const nameInput = screen.getByPlaceholderText('name');
-    await userEvent.type(nameInput, 'Jhon Doe');
-    const registerButton = screen.getByText('Buat Akun');
+    const submitButton = screen.getByText('Buat Akun');
 
     // action
-    await userEvent.click(registerButton);
+    await userEvent.type(emailInput, 'usernameTest');
+    await userEvent.type(passwordInput, 'passwordTest');
+    await userEvent.type(nameInput, 'Jhon Doe');
+    await waitFor(() => {
+      fireEvent.submit(submitButton);
+    });
 
     // assert
     expect(registerMock).toHaveBeenCalledWith({ email: 'usernameTest', password: 'passwordTest', name: 'Jhon Doe' });
