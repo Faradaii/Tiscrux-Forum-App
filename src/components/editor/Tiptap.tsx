@@ -11,7 +11,7 @@ import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
 import { FaImage, FaAlignJustify, FaAlignRight, FaAlignCenter, FaAlignLeft, FaBold, FaHighlighter, FaItalic, FaStrikethrough } from 'react-icons/fa';
 
-function MenuBar ({ editor }: { editor: Editor }): JSX.Element {
+function MenuBar ({ editor }: { editor?: Editor }): JSX.Element {
   const addImage = (): void => {
     const url = window.prompt('URL');
 
@@ -61,7 +61,8 @@ interface TiptapProps {
   }
 }
 
-export default function Tiptap ({ onChange, dangerouslySetInnerHTML }: TiptapProps): JSX.Element {
+export default function Tiptap ({ onChange, dangerouslySetInnerHTML }:
+TiptapProps): JSX.Element {
   const editor = useEditor({
     extensions: [
       Document,
@@ -70,7 +71,7 @@ export default function Tiptap ({ onChange, dangerouslySetInnerHTML }: TiptapPro
       Image,
       StarterKit,
       Placeholder.configure({
-        placeholder: 'Ceritakan ceritamu...'
+        placeholder: 'Ceritakan ceritamu ...'
       }),
       TextAlign.configure({
         types: ['paragraph']
@@ -80,6 +81,7 @@ export default function Tiptap ({ onChange, dangerouslySetInnerHTML }: TiptapPro
     content: dangerouslySetInnerHTML,
     editorProps: {
       attributes: {
+        placeholder: 'body',
         class: 'h-full flex-1 break-all rounded-lg bg-white-light outline-none dark:bg-white-dark placeholder:text-gray-400'
       }
     }
@@ -92,17 +94,13 @@ export default function Tiptap ({ onChange, dangerouslySetInnerHTML }: TiptapPro
     }
   }, [editor, onChange]);
 
-  if (editor == null) {
-    return (<div>Loading editor...</div>);
-  }
-
   return (
     <div className="grow flex flex-col">
       <div className="my-2 overflow-auto grow">
         <EditorContent editor={editor} className="h-full" />
       </div>
       <div>
-        <MenuBar editor={editor} />
+        <MenuBar editor={editor ?? undefined} />
       </div>
     </div>
   );
