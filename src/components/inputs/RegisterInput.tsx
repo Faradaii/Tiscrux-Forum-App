@@ -7,9 +7,9 @@ interface Props {
 }
 
 function RegisterInput ({ register }: Props): JSX.Element {
-  const [name, setName] = useInput();
-  const [email, setEmail] = useInput();
-  const [password, setPassword] = useInput();
+  const [name, setName, changeName] = useInput();
+  const [email, setEmail, changeEmail] = useInput();
+  const [password, setPassword, changePassword] = useInput();
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -19,6 +19,9 @@ function RegisterInput ({ register }: Props): JSX.Element {
       password
     };
     register(registerData);
+    changeName('');
+    changeEmail('');
+    changePassword('');
   };
 
   return (
