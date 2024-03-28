@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-interface ButtonLinkProps {
+export interface ButtonLinkProps {
   action: 'Login' | 'Register' | 'Beranda' | 'buatThread' | 'Leaderboard'
   optionalText?: string
   className?: string
@@ -22,7 +22,7 @@ function ButtonLink ({ action, optionalText, className }: ButtonLinkProps): JSX.
     Beranda: {
       path: '/',
       label: 'Beranda',
-      className: ''
+      className: 'bg-lime-2-light rounded-md'
     },
     buatThread: {
       path: '/addThread',
@@ -37,7 +37,7 @@ function ButtonLink ({ action, optionalText, className }: ButtonLinkProps): JSX.
   };
 
   return (
-    <button type="button" className={`p-2 block text-center ${className}`}>
+    <button type="button" className={`p-2 block text-center ${className ? className : actionName[action].className}`}>
       <Link href={actionName[action].path}>{optionalText ?? actionName[action].label}</Link>
     </button>
   );
