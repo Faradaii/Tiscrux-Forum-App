@@ -11,7 +11,7 @@ function LeaderboardList ({ leaderboards }: LeaderboardListProps): JSX.Element {
     <div className="flex flex-col gap-2">
       {
         (leaderboards?.map((leaderboard, index) => (
-          <LeaderboardItem key={leaderboard.user.id} index={index + 1} leaderboard={leaderboard} />
+          <LeaderboardItem key={leaderboard.user?.id} index={index + 1} leaderboard={leaderboard} />
         )))
       }
     </div>
