@@ -60,6 +60,7 @@
     "no-return-await": "off",
     "default-param-last": 0,
     "no-param-reassign": 0,
-    "no-case-declarations": 0
+    "no-case-declarations": 0,
+    "@typescript-eslint/no-unsafe-argument": 0
   }
 }
