@@ -23,4 +23,4 @@ function useInput (typeInput: number = 0, defaultValue: string = ''):
   }
 }
 
-export default useInput;
+export default useInputw;
