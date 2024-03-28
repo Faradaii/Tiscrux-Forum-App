@@ -1,43 +1,44 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ButtonLink from '../components/buttons/ButtonLink';
+
 const stories: Meta<typeof ButtonLink> = {
   title: 'Button Link',
-  component: ButtonLink,
-}
- 
+  component: ButtonLink
+};
+
 export default stories;
 type Story = StoryObj<typeof ButtonLink>;
 
 const withPathLogin: Story = {
   args: {
-    action: 'Login',
-  },
+    action: 'Login'
+  }
 };
 const withPathRegister: Story = {
   args: {
-    action: 'Register',
-  },
+    action: 'Register'
+  }
 };
 const withPathBeranda: Story = {
   args: {
-    action: 'Beranda',
-  },
+    action: 'Beranda'
+  }
 };
 const withPathBuatThread: Story = {
   args: {
-    action: 'buatThread',
-  },
+    action: 'buatThread'
+  }
 };
 const withPathLeaderboard: Story = {
   args: {
-    action: 'Leaderboard',
-  },
+    action: 'Leaderboard'
+  }
 };
 
-export { 
+export {
   withPathRegister,
   withPathBeranda,
   withPathBuatThread,
   withPathLeaderboard,
   withPathLogin
- }
+};
