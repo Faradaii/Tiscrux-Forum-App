@@ -8,7 +8,7 @@ function ErrorPage (): JSX.Element {
         <Image src="/error.svg" alt="404" width={300} height={300} className="m-auto" />
         <div className="text-center w-fit flex flex-col gap-4">
           <h2 className="text-5xl font-bold">404</h2>
-          <h2 className="text-lg">Halaman yang anda cari tidak ditemukan</h2>
+          <h2 className="text-lg">ups, Halaman yang anda cari tidak ditemukan</h2>
           <ButtonLink action="Beranda" optionalText="Kembali ke Beranda" className="bg-primary rounded-lg text-white" />
         </div>
       </div>
