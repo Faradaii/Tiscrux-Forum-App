@@ -38,7 +38,7 @@ function Sidebar ({
 
   return (
     <>
-      <aside className={`${show ? ' ml-0' : ' ml-[-250px] md:ml-0'} md:w-1/4 p-5 flex flex-col border-r-2 w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:sticky top-0 bottom-0 left-0 z-40 h-screen bg-white-light dark:bg-white-dark`}>
+      <aside className={`${show ? ' ml-0' : ' ml-[-250px] md:ml-0'} rounded-tr-3xl rounded-br-3xl md:w-1/4 p-5 flex flex-col border-r-2 border-lime-2-light w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:sticky top-0 bottom-0 left-0 z-40 h-screen bg-white-light dark:bg-white-dark`}>
         <div className="flex items-between w-full gap-2">
           <h1 className="font-semibold text-2xl grow">Tiscrux!</h1>
           <Toggle onToggleHandler={toggleTheme} content={theme} />
