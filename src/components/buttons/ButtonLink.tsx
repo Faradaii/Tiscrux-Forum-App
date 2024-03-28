@@ -37,7 +37,7 @@ function ButtonLink ({ action, optionalText, className }: ButtonLinkProps): JSX.
   };
 
   return (
-    <button type="button" className={`p-2 block text-center ${className ? className : actionName[action].className}`}>
+    <button type="button" className={`p-2 block text-center ${className ?? actionName[action].className}`}>
       <Link href={actionName[action].path}>{optionalText ?? actionName[action].label}</Link>
     </button>
   );
