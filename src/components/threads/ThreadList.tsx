@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThreadItem, type ThreadItemProps } from './ThreadItem';
+import ThreadItem, { type ThreadItemProps } from './ThreadItem';
 
 interface ThreadListProps {
   threads: ThreadItemProps[]
