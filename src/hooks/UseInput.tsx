@@ -17,9 +17,9 @@ function useInput (typeInput: number = 0, defaultValue: string = ''):
 
   switch (typeInput) {
     case 1:
-      return [value, onInputDivHandler, setValue];
+      return [value, setValue];
     default:
-      return [value, onInputHandler, setValue];
+      return [value, setValue];
   }
 }
 
