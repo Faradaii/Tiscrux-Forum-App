@@ -37,7 +37,7 @@ JSX.Element | null {
   return (
     <>
       <LoadingBar updateTime={300} maxProgress={80} progressIncrease={20} className="absolute z-50 bg-primary h-1" />
-      <div className="h-screen overflow-auto flex items-center gap-2 bg-white-light dark:bg-white-dark text-black-light dark:text-black-dark">
+      <div className="h-screen relative overflow-auto flex items-center gap-2 bg-white-light dark:bg-white-dark text-black-light dark:text-black-dark">
         {!disableNavbar.includes(pathname) && (
           <>
             <MenuBarMobile user={authUser} setter={setShowSidebar} />
