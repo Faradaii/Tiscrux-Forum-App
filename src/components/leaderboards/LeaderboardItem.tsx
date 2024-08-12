@@ -12,11 +12,11 @@ function LeaderboardItem ({
   return (
     <div className="flex justify-between gap-5 items-center p-3">
       <div className="flex w-full">
-        <h1 className="font-bold text-5xl w-2/12 text-center">{index}</h1>
+        <h1 className="font-bold md:text-5xl text-2xl w-2/12 text-center">{index}</h1>
         <div className="flex gap-3 px-2">
-          <img src={user?.avatar} alt={user?.id} className="rounded-full" />
+          <img src={user?.avatar} alt={user?.id} className="rounded-full w-12 h-12" />
           <div>
-            <h2 className="text-xl font-semibold">{user?.name}</h2>
+            <h2 className="md:text-xl text-base font-semibold">{user?.name}</h2>
             <h2>
               @
               {user?.id}
@@ -24,7 +24,7 @@ function LeaderboardItem ({
           </div>
         </div>
       </div>
-      <h1 className="font-bold text-2xl">{score}</h1>
+      <h1 className="font-bold md:text-2xl text-lg">{score}</h1>
     </div>
   );
 }
