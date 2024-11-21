@@ -1,4 +1,5 @@
 # Tiscrux Forum App
+<img width="1920" alt="tiscrux-landscape" src="https://github.com/user-attachments/assets/b28ff887-d9ff-458f-a490-bfcf455e0e82">
 
 Aplikasi forum open-source yang memungkinkan pengguna untuk berkolaborasi, bertukar ide, dan memperluas pengetahuan mereka. Dibangun untuk memenuhi submission dicoding idcamp react dev expert dengan teknologi NextJs, Tailwind.
 
